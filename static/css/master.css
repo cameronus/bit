@@ -1,3 +1,4 @@
+
 html {
   width: 100%;
   height: 100%;
@@ -7,29 +8,37 @@ body {
   height: 100%;
 }
 
-h1 {
-  text-align: center;
-}
-
 .container {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 #form {
-  width: 30%;
-  height: 30%;
+  width: 400px;
+  height: 40%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+  border: none !important;
 }
 
-textarea {
+#mainTitle {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 50px;
+}
+
+#text {
   resize: none;
-  overflow-y: visible !important;
   width: 100%;
-  height: 100%;
+  height: 100px;
   padding: 1em;
   font-size: 1em;
 }
 
-button.btn-success {
-
+.btn-success {
+  display: block;
+  margin: auto;
 }
