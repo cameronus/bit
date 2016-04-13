@@ -44,7 +44,7 @@ router.post('/', function(req, res) {
     var bitId = shortid.generate();
     //encryption goes here
     db.put(bitId, req.body.text, function() {
-      var url = '<a href="http://localhost/' + bitId + '/">here</a>.'
+      var url = '<a target="_blank" href="http://localhost/' + bitId + '/">here</a>.'
       res.send(url);
     });
   }
@@ -52,7 +52,8 @@ router.post('/', function(req, res) {
 
 router.get('/:bit([a-zA-Z0-9-_]{7})', function(req, res, next) {
   db.get(req.params.bit, function (err, value) {
-    if (err) next();
+    if (err) next(); //add better error handling
+    //decryption goes here
     res.end(value);
   });
 });

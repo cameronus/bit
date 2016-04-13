@@ -33,12 +33,19 @@ body {
 #text {
   resize: none;
   width: 100%;
-  height: 100px;
+  height: 130px;
   padding: 1em;
   font-size: 1em;
+  border-radius: 0;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
 }
 
 .btn-success {
   display: block;
-  margin: auto;
+  width: 100%;
+  margin-top: -20px;
+  border-radius: 0;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
 }
