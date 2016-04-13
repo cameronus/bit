@@ -15,8 +15,9 @@ $(function() {
       data: formData
     }).done(function(response) {
       swal({title: "Bit created!",
-        text: "You typed: " + response,
-        type: "success" });
+        text: "Your link is " + response,
+        type: "success",
+        html: true });
       $('#text').val('');
 
     }).fail(function(data) {

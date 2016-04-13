@@ -1,11 +1,14 @@
 var express = require('express');
 var session = require('express-session');
 var shortid = require('shortid');
-var bodyParser = require("body-parser");
+var bodyParser = require('body-parser');
+var levelup = require('levelup')
 var app = express();
 var router = express.Router();
 var port = process.env.PORT || 80;
 shortid.seed(1942);
+
+var db = levelup('./bit')
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
@@ -17,8 +20,7 @@ app.use(session({
   secret: 'a8dm38dsnw02n5n7k10dj',
   resave: false,
   saveUninitialized: false
-}))
-
+}));
 
 router.get('/', function(req, res) {
   var sess = req.session;
@@ -27,36 +29,36 @@ router.get('/', function(req, res) {
   res.render('pages/main', { hidden: hidden });
 });
 
-
-
-/*router.post('/', function(req, res) {
-  var sess = req.session;
-  var hidden = req.body.hidden;
-  //handle not in session error & catch all
-  if (req.body.text == "") {
-    res.render('pages/error', { error: "Enter text into form." });
-  } else if (hidden != sess.hidden) {
-    res.render('pages/error', { error: "Invalid form submission." });
-  } else {
-    res.render('pages/success', { success: "success!" });
-  }
-});*/
-
-/*router.get('/hello/:name', function(req, res) {
-  res.send('hello ' + req.params.name + '!');
-});*/
-
 router.post('/', function(req, res) {
   var sess = req.session;
   var hidden = req.body.hidden;
-  
+
   if (hidden != sess.hidden) {
     res.status(401);
     res.end();
+  } else if (req.body.text == '') {
+    res.status(401);
+    res.end('Enter something.');
   } else {
     res.status(200);
-    res.send(req.body.text);
+    var bitId = shortid.generate();
+    //encryption goes here
+    db.put(bitId, req.body.text, function() {
+      var url = '<a href="http://localhost/' + bitId + '/">here</a>.'
+      res.send(url);
+    });
   }
+});
+
+router.get('/:bit([a-zA-Z0-9-_]{7})', function(req, res, next) {
+  db.get(req.params.bit, function (err, value) {
+    if (err) next();
+    res.end(value);
+  });
+});
+
+router.get('*', function(req, res){
+  res.status(404).send("404 ERROR")
 });
 
 app.use('/', router);
