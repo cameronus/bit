@@ -31,13 +31,11 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {
   var sess = req.session;
   var hidden = req.body.hidden;
-
+  //handle not in session error & catch all
   if (req.body.text == "") {
     res.render('pages/error', { error: "Enter text into form." });
-    sweetAlert("Oops...", "Something went wrong!", "error");
   } else if (hidden != sess.hidden) {
     res.render('pages/error', { error: "Invalid form submission." });
-    sweetAlert("Oops...", "Something went wrong!", "error");
   } else {
     res.render('pages/success', { success: "success!" });
   }
