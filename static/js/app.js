@@ -21,21 +21,20 @@ $(function() {
       // Set the message text.
       $(formMessages).text(response);*/
       swal({title: "Shot created!",
-            text: "The link might go here in the future, but you typed in: " + response,
-            type: "success" });
+        text: "The link might go here in the future, but you typed in: " + response,
+        type: "success" });
 
       // Clear the form.
       $('#text').val('');
     }).fail(function(data) {
-      // Make sure that the formMessages div has the 'error' class.
-      /*$(formMessages).removeClass('success');
-      $(formMessages).addClass('error');*/
-
-      // Set the message text.
       if (data.responseText !== '') {
-          alert(data.responseText);
+        swal({title: "Error!",
+          text: "data.responseText",
+          type: "error" });
       } else {
-          alert('Oops! An error occured and your message could not be sent.');
+        swal({title: "Error!",
+          text: "Oops! An error occured and your message could not be sent.",
+          type: "error" });
       }
     });
   });
