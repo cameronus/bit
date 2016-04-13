@@ -18,7 +18,7 @@ $(function() {
         text: "You typed: " + response,
         type: "success" });
       $('#text').val('');
-      
+
     }).fail(function(data) {
       if (data.responseText !== '') {
         swal({title: "Error!",
@@ -26,7 +26,7 @@ $(function() {
           type: "error" });
       } else if (data.status === 401) {
         swal({title: "Error!",
-          text: "Don't screw with me!.",
+          text: "Don't screw with me!",
           type: "error",
           closeOnConfirm: false },
         function() {

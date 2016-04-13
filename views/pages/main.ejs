@@ -2,16 +2,15 @@
 <title>Bit</title>
 <%- include ../partials/header.ejs %>
 
-<h1>Bit</h1>
 <form id="form" method="post" action="/">
-    <input type="hidden" name="hidden" value="<%= hidden %>">
-    <div class="text">
-        <textarea id="text" name="text" class="form-control" autofocus></textarea>
-    </div>
-    <div class="button">
-        <button type="submit" class="btn btn-success">Create Bit</button>
-    </div>
+  <h1>Bit</h1>
+  <input type="hidden" name="hidden" value="<%= hidden %>">
+  <div class="text">
+    <textarea id="text" class="form-control" name="text" autofocus></textarea>
+  </div><br>
+  <div class="button">
+    <button type="submit" class="btn btn-success">Create Bit</button>
+  </div>
 </form>
-
 
 <%- include ../partials/footer.ejs %>

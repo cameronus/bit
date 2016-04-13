@@ -1,13 +1,35 @@
-html { height: 100%; }
+html {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  radial-gradient(white, lightgray)
 }
-textarea
-{
+
+h1 {
+  text-align: center;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+#form {
+  width: 30%;
+  height: 30%;
+}
+
+textarea {
   resize: none;
+  overflow-y: visible !important;
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+  font-size: 1em;
 }
-//get NORMALIZE
+
+button.btn-success {
+
+}
