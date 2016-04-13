@@ -25,7 +25,7 @@ router.get('/', function(req, res) {
   var hidden = shortid.generate();
 
   sess.hidden = hidden;
-  res.render('pages/main', { hidden: hidden, error: "" });
+  res.render('pages/main', { hidden: hidden });
 });
 
 
@@ -46,6 +46,11 @@ router.get('/', function(req, res) {
 /*router.get('/hello/:name', function(req, res) {
   res.send('hello ' + req.params.name + '!');
 });*/
+
+router.post('/', function(req, res) {
+  res.status(200);
+
+});
 
 app.use('/', router);
 
