@@ -8,6 +8,7 @@ var port = process.env.PORT || 80;
 shortid.seed(1942);
 
 app.set('view engine', 'ejs');
+app.use(express.static('static'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
   genid: function(req) {
