@@ -20,7 +20,9 @@ $(function() {
 
       // Set the message text.
       $(formMessages).text(response);*/
-      alert(response)
+      swal({title: "Shot created!",
+            text: "The link might go here in the future, but you typed in: " + response,
+            type: "success" });
 
       // Clear the form.
       $('#text').val('');
