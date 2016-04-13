@@ -49,7 +49,7 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
   res.status(200);
-
+  res.send('yay!');
 });
 
 app.use('/', router);
