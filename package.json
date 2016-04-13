@@ -1,26 +1,26 @@
 {
-  "name": "snapshot",
+  "name": "bit",
   "version": "0.0.1",
-  "description": "Snapshot provides a way to share text that disappears after being read.",
+  "description": "Bit provides a way to share text that disappears after being read.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thecameronjones/snapshot.git"
+    "url": "git+https://github.com/thecameronjones/bit.git"
   },
   "keywords": [
-    "snapshot",
+    "bit",
     "text",
     "sharing"
   ],
   "author": "Cameron Jones",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thecameronjones/snapshot/issues"
+    "url": "https://github.com/thecameronjones/bit/issues"
   },
-  "homepage": "https://github.com/thecameronjones/snapshot#readme",
+  "homepage": "https://github.com/thecameronjones/bit#readme",
   "dependencies": {
     "body-parser": "^1.15.0",
     "ejs": "^2.4.1",
