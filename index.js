@@ -28,7 +28,9 @@ router.get('/', function(req, res) {
   res.render('pages/main', { hidden: hidden, error: "" });
 });
 
-router.post('/', function(req, res) {
+
+
+/*router.post('/', function(req, res) {
   var sess = req.session;
   var hidden = req.body.hidden;
   //handle not in session error & catch all
@@ -39,11 +41,11 @@ router.post('/', function(req, res) {
   } else {
     res.render('pages/success', { success: "success!" });
   }
-});
+});*/
 
-router.get('/hello/:name', function(req, res) {
+/*router.get('/hello/:name', function(req, res) {
   res.send('hello ' + req.params.name + '!');
-});
+});*/
 
 app.use('/', router);
 

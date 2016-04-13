@@ -3,12 +3,15 @@
 <%- include ../partials/header.ejs %>
 
 <h1>Snapshot</h1>
-<form action="/" method="post">
-  <p>Please enter text into your snapshot.</p>
-  <input type="text" name="text" value="">
-  <input type="hidden" name="hidden" value="<%= hidden %>">
-  <input type="submit" name="name" value="Create">
+<form id="form" method="post" action="/">
+    <input type="hidden" name="hidden" value="<%= hidden %>">
+    <div class="text">
+        <textarea id="sync" name="text" rows="8" cols="40" autofocus></textarea>
+    </div>
+    <div class="button">
+        <button type="submit">Create Shot</button>
+    </div>
 </form>
-<p><%= error %></p>
+
 
 <%- include ../partials/footer.ejs %>
