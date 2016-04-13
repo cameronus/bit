@@ -14,26 +14,27 @@ $(function() {
       url: $(form).attr('action'),
       data: formData
     }).done(function(response) {
-      // Make sure that the formMessages div has the 'success' class.
-      /*$(formMessages).removeClass('error');
-      $(formMessages).addClass('success');
-
-      // Set the message text.
-      $(formMessages).text(response);*/
-      swal({title: "Shot created!",
-        text: "The link might go here in the future, but you typed in: " + response,
+      swal({title: "Bit created!",
+        text: "You typed: " + response,
         type: "success" });
-
-      // Clear the form.
       $('#text').val('');
+      
     }).fail(function(data) {
       if (data.responseText !== '') {
         swal({title: "Error!",
-          text: "data.responseText",
+          text: data.responseText,
           type: "error" });
+      } else if (data.status === 401) {
+        swal({title: "Error!",
+          text: "Don't screw with me!.",
+          type: "error",
+          closeOnConfirm: false },
+        function() {
+          location.reload();
+        });
       } else {
         swal({title: "Error!",
-          text: "Oops! An error occured and your message could not be sent.",
+          text: "Oops! A network error occured and your message could not be sent.",
           type: "error" });
       }
     });

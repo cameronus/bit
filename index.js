@@ -23,7 +23,6 @@ app.use(session({
 router.get('/', function(req, res) {
   var sess = req.session;
   var hidden = shortid.generate();
-
   sess.hidden = hidden;
   res.render('pages/main', { hidden: hidden });
 });
@@ -48,8 +47,16 @@ router.get('/', function(req, res) {
 });*/
 
 router.post('/', function(req, res) {
-  res.status(200);
-  res.send(req.body.text);
+  var sess = req.session;
+  var hidden = req.body.hidden;
+  
+  if (hidden != sess.hidden) {
+    res.status(401);
+    res.end();
+  } else {
+    res.status(200);
+    res.send(req.body.text);
+  }
 });
 
 app.use('/', router);

@@ -1,15 +1,15 @@
 <%- include ../partials/head.ejs %>
-<title>Make Snapshot</title>
+<title>Bit</title>
 <%- include ../partials/header.ejs %>
 
-<h1>Snapshot</h1>
+<h1>Bit</h1>
 <form id="form" method="post" action="/">
-    <!--<input type="hidden" name="hidden" value="<%= hidden %>">-->
+    <input type="hidden" name="hidden" value="<%= hidden %>">
     <div class="text">
-        <textarea id="text" name="text" rows="8" cols="40" class="form-control" autofocus></textarea>
+        <textarea id="text" name="text" class="form-control" autofocus></textarea>
     </div>
     <div class="button">
-        <button type="submit" class="btn btn-success">Create Shot</button>
+        <button type="submit" class="btn btn-success">Create Bit</button>
     </div>
 </form>
 
