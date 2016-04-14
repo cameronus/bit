@@ -1,4 +1,4 @@
-### bit
+# bit
 Messaging anonymously.
 
 ## What is bit?
