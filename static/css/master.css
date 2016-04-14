@@ -89,3 +89,12 @@ body {
   display: block;
   font-weight: 200;
 }
+
+#selectLink {
+  width: 225px;
+  height: 25px;
+  resize: none;
+  overflow: hidden;
+  border: none;
+  text-align: center;
+}
