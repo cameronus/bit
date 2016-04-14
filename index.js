@@ -64,7 +64,7 @@ var bitId = req.params.bit;
 
 router.get('*', function(req, res) {
   var path = req.url;
-  var regex = new RegExp('[a-zA-Z0-9-_]{7}');
+  var regex = new RegExp('/[a-zA-Z0-9-_]{7}/?$');
   if (regex.test(path)) {
     var error = "The bit you tried to access has already disappeared or was never created.";
   } else {
