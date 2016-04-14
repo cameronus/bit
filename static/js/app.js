@@ -40,8 +40,4 @@ $(function() {
       }
     });
   });
-  $("#selectLink").mouseover(function(ev) {
-    //var target = $(ev.target);
-  });
-
 });
