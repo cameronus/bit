@@ -84,6 +84,16 @@ body {
   margin-left: -15px;
 }
 
+#footer-left {
+  float: left;
+  margin-left: 5px;
+}
+
+#footer-right {
+  float: right;
+  margin-right: 5px;
+}
+
 .footertext {
   text-align: center;
   display: block;
