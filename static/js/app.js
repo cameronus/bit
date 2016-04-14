@@ -15,7 +15,7 @@ $(function() {
       data: formData
     }).done(function(response) {
       swal({title: "Bit created!",
-        text: "Your link is <a href='" + response + "'>here</a> or you may copy it from here: " + response,
+        text: "Your link is <a href='" + response + "'>here</a> or you may copy it from here: <b id='selectLink'>" + response + "</b>",
         type: "success",
         html: true });
       $('#text').val('');
@@ -40,4 +40,8 @@ $(function() {
       }
     });
   });
+  $("#selectLink").mouseover(function(ev) {
+    //var target = $(ev.target);
+  });
+
 });
