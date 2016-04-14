@@ -69,3 +69,7 @@ body {
 .backLink {
   font-size: 20px;
 }
+
+.error {
+  font-weight: 100;
+}
