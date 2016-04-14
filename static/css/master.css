@@ -92,9 +92,10 @@ body {
 
 #selectLink {
   width: 225px;
-  height: 35px;
+  height: 55px;
   resize: none;
   overflow: hidden;
   border: none;
+  outline: none;
   text-align: center;
 }
