@@ -32,34 +32,45 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {
   var sess = req.session;
   var hidden = req.body.hidden;
+  var bitText = req.body.text;
 
   if (hidden != sess.hidden) {
-    res.status(401);
-    res.end();
-  } else if (req.body.text == '') {
-    res.status(401);
-    res.end('Enter something.');
+    res.status(400).end();
+  } else if (bitText == '') {
+    res.status(400).send('Enter something.');
   } else {
     res.status(200);
     var bitId = shortid.generate();
     //encryption goes here
-    db.put(bitId, req.body.text, function() {
-      var url = '<a target="_blank" href="http://localhost/' + bitId + '/">here</a>.'
-      res.send(url);
+    db.put(bitId, bitText, function() {
+      var url = 'http://' + req.hostname + '/' + bitId + '/';
+      res.end(url);
     });
   }
 });
 
 router.get('/:bit([a-zA-Z0-9-_]{7})', function(req, res, next) {
-  db.get(req.params.bit, function (err, value) {
-    if (err) next(); //add better error handling
-    //decryption goes here
-    res.end(value);
+var bitId = req.params.bit;
+  db.get(bitId, function (err, value) {
+    if (err) {
+      next();
+    } else {
+      //decryption goes here
+      res.render('pages/bit', { bitId: bitId, bit: value });
+    }
+    db.del(bitId);
   });
 });
 
-router.get('*', function(req, res){
-  res.status(404).send("404 ERROR")
+router.get('*', function(req, res) {
+  var path = req.url;
+  var regex = new RegExp('[a-zA-Z0-9-_]{7}');
+  if (regex.test(path)) {
+    var error = "The bit you tried to access has already disappeared or was never created.";
+  } else {
+    var error = "The file you were looking for cannot be found.";
+  }
+  res.status(404).render('pages/error', { error: error });
 });
 
 app.use('/', router);

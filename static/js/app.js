@@ -15,7 +15,7 @@ $(function() {
       data: formData
     }).done(function(response) {
       swal({title: "Bit created!",
-        text: "Your link is " + response,
+        text: "Your link is <a href='" + response + "'>here</a> or you may copy it from here: " + response,
         type: "success",
         html: true });
       $('#text').val('');
@@ -25,7 +25,7 @@ $(function() {
         swal({title: "Error!",
           text: data.responseText,
           type: "error" });
-      } else if (data.status === 401) {
+      } else if (data.status === 400) {
         swal({title: "Error!",
           text: "Don't screw with me!",
           type: "error",
