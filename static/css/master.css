@@ -20,7 +20,7 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -60%);
+  transform: translate(-50%, -70%);
 }
 
 #mainTitle {
@@ -108,4 +108,14 @@ body {
   border: none;
   outline: none;
   text-align: center;
+}
+
+.regular-text {
+  text-align: center;
+  font-weight: 200;
+}
+
+.what-is-this {
+  position: relative;
+  bottom: 10px;
 }
