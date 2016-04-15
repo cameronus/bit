@@ -4,6 +4,7 @@ var shortid = require('shortid');
 var bodyParser = require('body-parser');
 var levelup = require('levelup')
 var NodeRSA = require('node-rsa');
+var moment = require('moment');
 var app = express();
 var router = express.Router();
 var port = process.env.PORT || 80;
@@ -12,8 +13,7 @@ shortid.seed(1942);
 var db = levelup('./bit')
 db.put('stats', 0);
 var key = new NodeRSA({b: 512});
-var date = new Date();
-var dateOfStart = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+var dateOfStart = moment().format('MMMM Do, YYYY [at] h:mm:ss A[.]');
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
