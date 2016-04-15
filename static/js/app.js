@@ -15,7 +15,7 @@ $(function() {
       data: formData
     }).done(function(response) {
       swal({title: "Bit created!",
-        text: "You may copy the link to your bit from here: <br><b><textarea id='selectLink' type='text' onclick='this.focus(); this.select()' readonly='readonly'>" + response + "</textarea></b>",
+        text: "You may copy the link to your bit from here: <br><b><textarea id='selectLink' type='text' onclick='this.focus(); this.select(); document.execCommand(\"copy\")' readonly='readonly'>" + response + "</textarea></b>",
         type: "success",
         html: true });
       $('#text').val('');
