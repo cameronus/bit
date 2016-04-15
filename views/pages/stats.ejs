@@ -4,8 +4,12 @@
 
 <div id="statsWrapper">
   <h1 class="mainTitle">Stats</h1>
-  <p class="regularText">Last restart on <%= startDate %></p>
-  <p class="regularText">There are <%= bitCount %> bits since last restart.</p>
+  <p class="regularText">Last restart on <strong><%= startDate %></strong></p>
+  <% if (bitCount == 1) { %>
+    <p><strong><%= bitCount %> bit</strong> has been made since last restart.</p>
+  <% } else {%>
+    <p class="regularText"><strong><%= bitCount %> bits</strong> have been made since last restart.</p>
+  <% } %>
   <a href="/" class="backLink">Back</a>
 </div>
 
