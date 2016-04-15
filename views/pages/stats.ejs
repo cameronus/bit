@@ -2,10 +2,12 @@
 <title>Bit Stats</title>
 <%- include ../partials/header.ejs %>
 
-<h1>Stats</h1>
-<p>Last Restart: <%= startDate %></p>
-<p>Bit Count: <%= bitCount %></p>
-<a href="/" class="backLink">Back</a>
+<div id="statsWrapper">
+  <h1 class="mainTitle">Stats</h1>
+  <p class="regularText">Last Restart: <%= startDate %></p>
+  <p class="regularText">Bit Count: <%= bitCount %></p>
+  <a href="/" class="backLink">Back</a>
+</div>
 
 <%- include ../partials/footer.ejs %>
 <%- include ../partials/end.ejs %>
