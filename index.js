@@ -7,6 +7,8 @@ var NodeRSA = require('node-rsa');
 var app = express();
 var router = express.Router();
 var port = process.env.PORT || 80;
+var curDate = new Date();
+curDate = getMonth() + " " + curDate.getDate() + ", " + curDate.getFullYear();
 shortid.seed(1942);
 
 var db = levelup('./bit')
@@ -61,7 +63,7 @@ router.get('/stats', function(req, res, next) {
     if (err) {
       next();
     } else {
-      res.render('pages/stats', { bitCount: value });
+      res.render('pages/stats', { bitCount: value, startDate: curDate });
     }
   });
 });
