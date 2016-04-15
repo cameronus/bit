@@ -15,7 +15,7 @@ $(function() {
       data: formData
     }).done(function(response) {
       swal({title: "Bit created!",
-        text: "Your link is <a href='" + response + "'><b>here</b></a> or you may click and copy it from here: <b><textarea id='selectLink' type='text' onclick='this.focus(); this.select()' readonly='readonly'>" + response + "</textarea></b>",
+        text: "You may copy the link to your bit from here: <br><b><textarea id='selectLink' type='text' onclick='this.focus(); this.select()' readonly='readonly'>" + response + "</textarea></b>",
         type: "success",
         html: true });
       $('#text').val('');
@@ -35,7 +35,7 @@ $(function() {
         });
       } else {
         swal({title: "Error!",
-          text: "Oops! A network error occured and your message could not be sent.",
+          text: "A network error has occurred!",
           type: "error" });
       }
     });
