@@ -1,0 +1,36 @@
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
+and (-webkit-min-device-pixel-ratio: 2),
+and (min-device-width : 375px)
+and (max-device-width : 667px),
+and (min-device-width : 414px)
+and (max-device-width : 736px),
+and (min-device-width : 320px)
+and (max-device-width : 568px),
+and (min-device-width : 320px)
+and (max-device-width : 480px)
+and (orientation : portrait)
+{
+  #form {
+    width: 100%;
+    height: 80%;
+    margin: auto;
+    position: absolute;
+    top: 15px;
+  }
+  #footer-left
+  {
+    position: absolute;
+    bottom: 5px;
+    float: none;
+    width: 100%;
+  }
+  #footer-right
+  {
+    position: absolute;
+    bottom: 10px;
+    float: none;
+    width: 100%;
+  }
+}
