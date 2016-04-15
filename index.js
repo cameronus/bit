@@ -3,12 +3,15 @@ var session = require('express-session');
 var shortid = require('shortid');
 var bodyParser = require('body-parser');
 var levelup = require('levelup')
+var NodeRSA = require('node-rsa');
 var app = express();
 var router = express.Router();
 var port = process.env.PORT || 80;
 shortid.seed(1942);
 
 var db = levelup('./bit')
+db.put('stats', 0);
+var key = new NodeRSA({b: 512});
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
@@ -41,11 +44,26 @@ router.post('/', function(req, res) {
   } else {
     res.status(200);
     var bitId = shortid.generate();
-    //encryption goes here
-    db.put(bitId, bitText, function() {
+    var encryptedBitText = key.encrypt(bitText, 'base64');
+    db.put(bitId, encryptedBitText, function() {
       var url = 'http://' + req.hostname + '/' + bitId + '/';
       res.end(url);
+      db.get('stats', function (err, value) {
+        var newValue = parseInt(value) + 1
+        db.put('stats', newValue);
+        console.log(value);
+      });
     });
+  }
+});
+
+router.get('/stats', function(req, res, next) {
+  db.get('stats', function (err, value) {
+    if (err) {
+      next();
+    } else {
+      res.render('pages/stats', { bitCount: value });
+    }
   }
 });
 
@@ -55,8 +73,8 @@ var bitId = req.params.bit;
     if (err) {
       next();
     } else {
-      //decryption goes here
-      res.render('pages/bit', { bitId: bitId, bit: value });
+      var decryptedValue = key.decrypt(value, 'utf8');
+      res.render('pages/bit', { bitId: bitId, bit: decryptedValue });
     }
     db.del(bitId);
   });
