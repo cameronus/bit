@@ -1,6 +1,6 @@
 {
   "name": "bit",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "description": "Bit provides a way to share text that disappears after being read.",
   "main": "index.js",
   "scripts": {
