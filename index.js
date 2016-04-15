@@ -51,7 +51,6 @@ router.post('/', function(req, res) {
       db.get('stats', function (err, value) {
         var newValue = parseInt(value) + 1
         db.put('stats', newValue);
-        console.log(value);
       });
     });
   }
