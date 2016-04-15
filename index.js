@@ -64,7 +64,7 @@ router.get('/stats', function(req, res, next) {
     } else {
       res.render('pages/stats', { bitCount: value });
     }
-  }
+  });
 });
 
 router.get('/:bit([a-zA-Z0-9-_]{7})', function(req, res, next) {
