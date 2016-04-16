@@ -94,7 +94,7 @@ router.get('*', function(req, res) {
   var path = req.url;
   var regex = new RegExp(/\/[a-zA-Z0-9-_]{7,14}\~?\/?$/);
   if (regex.test(path)) {
-    var error = "The bit you tried to access has already disappeared or was never created.";
+    var error = "The bit you have tried to access has already disappeared or was never created.";
   } else {
     var error = "The file you were looking for cannot be found.";
   }
