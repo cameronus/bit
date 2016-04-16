@@ -13,7 +13,8 @@ shortid.seed(1942);
 var db = levelup('./bit')
 db.put('stats', 0);
 var key = new NodeRSA({b: 512});
-var dateOfStart = moment().format('MMMM Do, YYYY [at] h:mm:ss A[.]');
+var dateOfStart = moment().format('MMMM Do, YYYY');
+var timeOfStart = moment().format('h:mm:ss A');
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
@@ -47,11 +48,11 @@ router.post('/', function(req, res) {
     res.status(200);
     var bitId = shortid.generate();
     var encryptedBitText = key.encrypt(bitText, 'base64');
-    db.put(bitId, encryptedBitText, function() {
+    db.put(bitId, encryptedBitText, function(err) {
       var url = 'http://' + req.hostname + '/' + bitId + '/';
       res.end(url);
       db.get('stats', function (err, value) {
-        var newValue = parseInt(value) + 1
+        var newValue = parseInt(value) + 1;
         db.put('stats', newValue);
       });
     });
@@ -63,12 +64,12 @@ router.get('/stats', function(req, res, next) {
     if (err) {
       next();
     } else {
-      res.render('pages/stats', { bitCount: value, startDate: dateOfStart });
+      res.render('pages/stats', { bitCount: value, startDate: dateOfStart, startTime: timeOfStart });
     }
   });
 });
 
-router.get('/:bit([a-zA-Z0-9-_]{7})', function(req, res, next) {
+router.get('/:bit([a-zA-Z0-9-_]{7,14})', function(req, res, next) {
 var bitId = req.params.bit;
   db.get(bitId, function (err, value) {
     if (err) {
@@ -83,7 +84,7 @@ var bitId = req.params.bit;
 
 router.get('*', function(req, res) {
   var path = req.url;
-  var regex = new RegExp('/[a-zA-Z0-9-_]{7}/?$');
+  var regex = new RegExp('/[a-zA-Z0-9-_]{7,14}/?$');
   if (regex.test(path)) {
     var error = "The bit you tried to access has already disappeared or was never created.";
   } else {
