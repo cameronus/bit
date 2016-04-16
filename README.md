@@ -8,7 +8,7 @@ Its anonymous, secure, and private.
 #### Anonymous
 Our service does not track anything about the user. There is also no way to enter any personally identifying information.
 #### Secure
-Your bits are encrypted using 512-bit RSA private key encryption.
+Your bits are encrypted using 512-bit RSA private key encryption and all of the data is sent using SSL encryption.
 #### Private
 Your bit will self-destruct after someone views it (unless set otherwise), which means no one other than the person you want to can access it.
 
