@@ -49,7 +49,7 @@ label {
   font-weight: 200;
 }
 
-.what-is-this {
+.subtitles {
   position: relative;
   bottom: 10px;
 }
@@ -114,7 +114,7 @@ label {
 }
 
 #selectLink {
-  width: 225px;
+  width: 320px;
   height: 55px;
   resize: none;
   overflow: hidden;
