@@ -4,7 +4,7 @@
 * [How do I use bit?](#how-do-i-use-bit)
 
 ## Why use bit?
-Its anonymous, secure, and private.
+It's anonymous, secure, and private.
 #### Anonymous
 Our service does not track anything about the user. There is also no way to enter any personally identifying information.
 #### Secure
