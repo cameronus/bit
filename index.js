@@ -39,15 +39,6 @@ router.post('/', function(req, res) {
   var sess = req.session;
   var hidden = req.body.hidden;
   var bitText = req.body.text;
-  var permanent = req.body.permanent;
-  if (permanent === undefined)
-  {
-    permanent = false;
-  }
-  else if (permanent === "true")
-  {
-    permanent = true;
-  }
 
   if (hidden != sess.hidden) {
     res.status(400).end();
@@ -55,7 +46,12 @@ router.post('/', function(req, res) {
     res.status(400).send('Enter something.');
   } else {
     res.status(200);
-    var bitId = shortid.generate();
+    var generatedId = shortid.generate();
+    if (req.body.permanent) {
+      var bitId = generatedId + '~';
+    } else {
+      var bitId = generatedId;
+    }
     var encryptedBitText = key.encrypt(bitText, 'base64');
     db.put(bitId, encryptedBitText, function(err) {
       var url = req.protocol + '://' + req.hostname + '/' + bitId + '/';
@@ -65,7 +61,6 @@ router.post('/', function(req, res) {
         db.put('stats', count);
       });
     });
-    db.put(bitId + "_permanent", permanent);
   }
 });
 
@@ -79,36 +74,25 @@ router.get('/stats', function(req, res, next) {
   });
 });
 
-router.get('/:bit([a-zA-Z0-9-_]{7,14})', function(req, res, next) {
-var bitId = req.params.bit;
-  db.get(bitId, function (err, value) {
+router.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
+  var bitId = req.params.bit;
+  var cleanedId = bitId.replace(/\/$/, "");
+  db.get(cleanedId, function (err, value) {
     if (err) {
       next();
     } else {
       var decryptedValue = key.decrypt(value, 'utf8');
-      res.render('pages/bit', { bitId: bitId, bit: decryptedValue });
+      res.render('pages/bit', { bitId: cleanedId, bit: decryptedValue });
+      if (!bitId.includes('~')) {
+        db.del(cleanedId);
+      }
     }
-    db.get(bitId + "_permanent", function (err, value) {
-      console.log(value);
-      if (err)
-      {
-        next();
-      }
-      else if (value==="true")
-      {
-        //do nothing
-      }
-      else
-      {
-        db.del(bitId);
-      }
-    });
   });
 });
 
 router.get('*', function(req, res) {
   var path = req.url;
-  var regex = new RegExp('/[a-zA-Z0-9-_]{7,14}/?$');
+  var regex = new RegExp(/\/[a-zA-Z0-9-_]{7,14}\~?\/?$/);
   if (regex.test(path)) {
     var error = "The bit you tried to access has already disappeared or was never created.";
   } else {

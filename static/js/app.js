@@ -19,7 +19,7 @@ $(function() {
         type: "success",
         html: true });
       $('#text').val('');
-
+      $('#permanent').attr('checked', false);
     }).fail(function(data) {
       if (data.responseText !== '') {
         swal({title: "Error!",
