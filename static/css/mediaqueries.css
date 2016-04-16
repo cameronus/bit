@@ -21,6 +21,21 @@
     font-size: 12px;
     margin: 0;
   }
+  .bitWrapper {
+    text-align: center;
+    width: 80%;
+    word-break: normal;
+  }
+
+  .errorWrapper {
+    text-align: center;
+    width: 80%;
+  }
+
+  #statsWrapper {
+    text-align: center;
+    width: 80%;
+  }
 }
 
 @media only screen and (max-width: 414px) {
