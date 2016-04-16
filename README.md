@@ -1,28 +1,25 @@
 # bit
-**bit** provides a way to share text that will disappear after being read by the first person who visits the link.
-* [What is bit?](#what-is-bit)
-* [Why use bit?](#why-use-bit)
-* [How do I make a bit?](#how-do-i-make-a-bit)
-
-## What is bit?
 **bit** is a tool that lets you send messages in text (called _bits_) through links, and only the first person to go to the link, unless set otherwise, will receive the text.
+* [Why use bit?](#why-use-bit)
+* [How do I use bit?](#how-do-i-use-bit)
 
 ## Why use bit?
-Its anonymous, secure, and private. Its also great for sending great amounts of text shortened to a link.
-### Anonymous
-bit does not have any identifying features or user tracking.
-### Secure
-We use 512-bit RSA private-key encryption. No one unauthorized will be able to decrypt your bits.
-### Private
-Even if you do send the link to someone via an insecure medium, anyone trying to hack into your conversation will not view the message. Why? Unless specifically set otherwise, your bit will delete itself after being read.
+Its anonymous, secure, and private.
+#### Anonymous
+Our service does not track anything about the user. There is also no way to enter any personally identifying information.
+#### Secure
+Your bits are encrypted using 512-bit RSA private key encryption.
+#### Private
+Your bit will self-destruct after someone views it (unless set otherwise), which means no one other than the person you want to can access it.
 
-## How do I make a bit?
-Simple!
+## How do I use bit?
 
-1. Go to [our website](http://bitapp.cf/).
+1. Visit [our website](http://bitapp.cf/).
 
-2. Enter your message in the big text box.
+2. Enter your text into the large box.
 
-3. If you want your bit to be permanent (so it does not delete itself after being seen), check "Make Permanent" below the "Create Bit" button.
+3. If you want your bit to be permanent, check the box underneath the "Create" button.
 
-4. Click on the "Create Bit" button. A link will be given to the bit. Send this to the recipient, and when they visit the link, they will see the text.
+4. To create it, click the "Create Bit" button beneath the text box. A window will pop up and provide you with the link to your bit.
+
+5. Once you want someone else to see your bit: email, text, or read the bit ID to a person. Once they visit that page, the bit will be either deleted (default behavior), or it will stay there permanently (if you checked the box).
