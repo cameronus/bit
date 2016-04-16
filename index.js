@@ -39,6 +39,15 @@ router.post('/', function(req, res) {
   var sess = req.session;
   var hidden = req.body.hidden;
   var bitText = req.body.text;
+  var permanent = req.body.permanent;
+  if (permanent === undefined)
+  {
+    permanent = false;
+  }
+  else if (permanent === "true")
+  {
+    permanent = true;
+  }
 
   if (hidden != sess.hidden) {
     res.status(400).end();
@@ -56,6 +65,7 @@ router.post('/', function(req, res) {
         db.put('stats', count);
       });
     });
+    db.put(bitId + "_permanent", permanent);
   }
 });
 
@@ -78,7 +88,21 @@ var bitId = req.params.bit;
       var decryptedValue = key.decrypt(value, 'utf8');
       res.render('pages/bit', { bitId: bitId, bit: decryptedValue });
     }
-    db.del(bitId);
+    db.get(bitId + "_permanent", function (err, value) {
+      console.log(value);
+      if (err)
+      {
+        next();
+      }
+      else if (value==="true")
+      {
+        //do nothing
+      }
+      else
+      {
+        db.del(bitId);
+      }
+    });
   });
 });
 
