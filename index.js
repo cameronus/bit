@@ -1,17 +1,4 @@
 var LEX = require('letsencrypt-express');
-
-var lex = LEX.create({
-  configDir: require('os').homedir() + '/letsencrypt/etc'
-, approveRegistration: function (hostname, cb) { // leave `null` to disable automatic registration
-    // Note: this is the place to check your database to get the user associated with this domain
-    cb(null, {
-      domains: [hostname]
-    , email: 'cameroncjones4@gmail.com' // user@example.com
-    , agreeTos: true
-    });
-  }
-});
-
 var express = require('express');
 var session = require('express-session');
 var shortid = require('shortid');
@@ -23,6 +10,18 @@ var app = express();
 var router = express.Router();
 var port = process.env.PORT || 80;
 shortid.seed(6899);
+
+var lex = LEX.create({
+  configDir: require('os').homedir() + '/letsencrypt/etc'
+, approveRegistration: function (hostname, cb) { // leave `null` to disable automatic registration
+    // Note: this is the place to check your database to get the user associated with this domain
+    cb(null, {
+      domains: [hostname]
+    , email: 'cameroncjones4@gmail.com'
+    , agreeTos: true
+    });
+  }
+});
 
 var db = levelup('./bit', { db: require('memdown') });
 db.put('stats', 0);
@@ -41,6 +40,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
+router.get('*', ensureSecure);
 
 router.get('/', function(req, res) {
   var sess = req.session;
@@ -117,12 +118,16 @@ router.get('*', function(req, res) {
 
 app.use('/', router);
 
-/*app.listen(port);
-console.log('Magic happens on port ' + port);*/
+function ensureSecure(req, res, next) {
+  if (req.secure || req.headers.host == "localhost") {
+    next();
+  } else {
+    res.redirect('https://' + req.hostname + req.url);
+  }
+}
 
 lex.onRequest = app;
-
 lex.listen([80], [443, 5001], function () {
   var protocol = ('requestCert' in this) ? 'https': 'http';
-  console.log("Listening at " + protocol + '://localhost:' + this.address().port);
+  console.log("Magic happens at " + protocol + '://localhost:' + this.address().port);
 });
