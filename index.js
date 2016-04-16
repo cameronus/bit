@@ -10,9 +10,8 @@ var router = express.Router();
 var port = process.env.PORT || 80;
 shortid.seed(6899);
 
-var db = levelup('./bit', { db: require('memdown') })
-var statsArray = [0, 0];
-db.put('stats', statsArray)
+var db = levelup('./bit', { db: require('memdown') });
+db.put('stats', 0);
 var key = new NodeRSA({b: 512});
 var dateOfStart = moment().format('MMMM Do, YYYY');
 var timeOfStart = moment().format('h:mm:ss A');
@@ -53,13 +52,8 @@ router.post('/', function(req, res) {
       var url = req.protocol + '://' + req.hostname + '/' + bitId + '/';
       res.end(url);
       db.get('stats', function (err, value) {
-        console.log(value);
-        var newCount = value[0] + 1;
-        var newLength = value[1] + 1;
-        console.log(value);
-        var statsArray = [newCount, newLength];
-        console.log(statsArray);
-        db.put('stats', statsArray);
+        var count = parseInt(value) + 1;
+        db.put('stats', count);
       });
     });
   }
