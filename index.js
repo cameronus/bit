@@ -8,10 +8,11 @@ var moment = require('moment');
 var app = express();
 var router = express.Router();
 var port = process.env.PORT || 80;
-shortid.seed(1942);
+shortid.seed(6899);
 
-var db = levelup('./bit')
-db.put('stats', 0);
+var db = levelup('./bit', { db: require('memdown') })
+var statsArray = [0, 0];
+db.put('stats', statsArray)
 var key = new NodeRSA({b: 512});
 var dateOfStart = moment().format('MMMM Do, YYYY');
 var timeOfStart = moment().format('h:mm:ss A');
@@ -49,11 +50,16 @@ router.post('/', function(req, res) {
     var bitId = shortid.generate();
     var encryptedBitText = key.encrypt(bitText, 'base64');
     db.put(bitId, encryptedBitText, function(err) {
-      var url = 'http://' + req.hostname + '/' + bitId + '/';
+      var url = req.protocol + '://' + req.hostname + '/' + bitId + '/';
       res.end(url);
       db.get('stats', function (err, value) {
-        var newValue = parseInt(value) + 1;
-        db.put('stats', newValue);
+        console.log(value);
+        var newCount = value[0] + 1;
+        var newLength = value[1] + 1;
+        console.log(value);
+        var statsArray = [newCount, newLength];
+        console.log(statsArray);
+        db.put('stats', statsArray);
       });
     });
   }
@@ -64,7 +70,7 @@ router.get('/stats', function(req, res, next) {
     if (err) {
       next();
     } else {
-      res.render('pages/stats', { bitCount: value, startDate: dateOfStart, startTime: timeOfStart });
+      res.render('pages/stats', { stats: value, startDate: dateOfStart, startTime: timeOfStart });
     }
   });
 });
