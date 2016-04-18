@@ -4,7 +4,7 @@
   "description": "Bit provides a way to share text that disappears after being read.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/jshint/bin/jshint app.js"
+    "test": "./node_modules/jshint/bin/jshint index.js"
   },
   "repository": {
     "type": "git",
