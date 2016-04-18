@@ -3,7 +3,7 @@ var express = require('express');
 var session = require('express-session');
 var shortid = require('shortid');
 var bodyParser = require('body-parser');
-var levelup = require('levelup')
+var levelup = require('levelup');
 var NodeRSA = require('node-rsa');
 var moment = require('moment');
 var app = express();
@@ -12,14 +12,8 @@ var port = process.env.PORT || 80;
 shortid.seed(6899);
 
 var lex = LEX.create({
-  configDir: require('os').homedir() + '/letsencrypt/etc'
-, approveRegistration: function (hostname, cb) { // leave `null` to disable automatic registration
-    // Note: this is the place to check your database to get the user associated with this domain
-    cb(null, {
-      domains: [hostname]
-    , email: 'cameroncjones4@gmail.com'
-    , agreeTos: true
-    });
+  configDir: require('os').homedir() + '/letsencrypt/etc', approveRegistration: function (hostname, cb) {
+    cb(null, { domains: [hostname], email: 'cameroncjones4@gmail.com', agreeTos: true });
   }
 });
 
@@ -57,15 +51,16 @@ router.post('/', function(req, res) {
 
   if (hidden != sess.hidden) {
     res.status(400).end();
-  } else if (bitText == '') {
+  } else if (bitText === '') {
     res.status(400).send('Enter something.');
   } else {
     res.status(200);
     var generatedId = shortid.generate();
+    var bitId;
     if (req.body.permanent) {
-      var bitId = generatedId + '~';
+      bitId = generatedId + '~';
     } else {
-      var bitId = generatedId;
+      bitId = generatedId;
     }
     var encryptedBitText = key.encrypt(bitText, 'base64');
     db.put(bitId, encryptedBitText, function(err) {
@@ -108,10 +103,11 @@ router.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
 router.get('*', function(req, res) {
   var path = req.url;
   var regex = new RegExp(/\/[a-zA-Z0-9-_]{7,14}\~?\/?$/);
+  var error;
   if (regex.test(path)) {
-    var error = "The bit you have tried to access has already disappeared or was never created.";
+    error = "The bit you have tried to access has already disappeared or was never created.";
   } else {
-    var error = "The file you were looking for cannot be found.";
+    error = "The file you were looking for cannot be found.";
   }
   res.status(404).render('pages/error', { error: error });
 });
