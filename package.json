@@ -4,7 +4,7 @@
   "description": "Bit provides a way to share text that disappears after being read.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/jshint/bin/jshint index.js"
+    "test": "./node_modules/jshint/bin/jshint *.js"
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
     "sharing"
   ],
   "author": "Cameron Jones",
-  "license": "ISC",
+  "license": "Attribution-NonCommercial-NoDerivs 3.0 Unported",
   "bugs": {
     "url": "https://github.com/thecameronjones/bit/issues"
   },
