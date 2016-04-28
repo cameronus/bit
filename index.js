@@ -1,4 +1,6 @@
-var LEX = require('letsencrypt-express');
+'use strict';
+
+var letsencrypt = require('letsencrypt-express');
 var express = require('express');
 var session = require('express-session');
 var shortid = require('shortid');
@@ -11,7 +13,7 @@ var router = express.Router();
 var port = process.env.PORT || 80;
 shortid.seed(6899);
 
-var lex = LEX.create({
+var lex = letsencrypt.create({
   configDir: require('os').homedir() + '/letsencrypt/etc', approveRegistration: function (hostname, cb) {
     cb(null, { domains: [hostname], email: 'cameroncjones4@gmail.com', agreeTos: true });
   }
@@ -30,7 +32,7 @@ app.use(session({
   genid: function(req) {
     return shortid.generate();
   },
-  secret: 'a8dm38dsnw02n5n7k10dj',
+  secret: 'aj4jwhjdhbf78JDIOjkhk=-_8968fs_89itghJGJHFLDSJK6e3#_P-3',
   resave: false,
   saveUninitialized: false
 }));

@@ -10,7 +10,7 @@ Our service does not track anything about the user. There is also no way to ente
 #### Secure
 Your bits are encrypted using 512-bit RSA private key encryption and all of the data is sent using SSL encryption.
 #### Private
-Your bit will self-destruct after someone views it (unless set otherwise), which means no one other than the person you want to can access it.
+Your bit will self-destruct after someone views it (unless set otherwise), which means no one other than the person you want to can see it.
 
 ## How do I use bit?
 
