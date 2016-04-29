@@ -13,6 +13,10 @@ var router = express.Router();
 var port = process.env.PORT || 80;
 shortid.seed(6899);
 
+/* Today's date and bits made today for stats */
+var statsTodayDate = moment().format('MMMM Do, YYYY');
+var statsBitsMadeToday = 0;
+
 var lex = letsencrypt.create({
   configDir: require('os').homedir() + '/letsencrypt/etc', approveRegistration: function (hostname, cb) {
     cb(null, { domains: [hostname], email: 'cameroncjones4@gmail.com', agreeTos: true });
@@ -69,6 +73,15 @@ router.post('/', function(req, res) {
       var url = req.protocol + '://' + req.hostname + '/' + bitId + '/';
       res.end(url);
       db.get('stats', function (err, value) {
+        var todaysDate = moment().format('MMMM Do, YYYY');
+        if (statsTodayDate!==todaysDate)
+        {
+          statsBitsMadeToday = 1;
+          statsTodayDate = todaysDate;
+        }
+        else {
+          statsBitsMadeToday = statsBitsMadeToday + 1;
+        }
         var count = parseInt(value) + 1;
         db.put('stats', count);
       });
@@ -81,7 +94,13 @@ router.get('/stats', function(req, res, next) {
     if (err) {
       next();
     } else {
-      res.render('pages/stats', { stats: value, startDate: dateOfStart, startTime: timeOfStart });
+      var todaysDate = moment().format('MMMM Do, YYYY');
+      if (statsTodayDate !== todaysDate)
+      {
+        statsTodayDate = todaysDate;
+        statsBitsMadeToday = 0;
+      }
+      res.render('pages/stats', { stats: value, startDate: dateOfStart, startTime: timeOfStart, bitsToday: statsBitsMadeToday });
     }
   });
 });
