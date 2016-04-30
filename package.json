@@ -1,6 +1,6 @@
 {
   "name": "bit",
-  "version": "1.2.0",
+  "version": "1.3.2",
   "description": "Bit provides a way to share text that disappears after being read.",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,6 @@
   "homepage": "https://github.com/thecameronjones/bit#readme",
   "dependencies": {
     "body-parser": "^1.15.0",
-    "clipboard": "^1.5.10",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",

@@ -74,12 +74,10 @@ router.post('/', function(req, res) {
       res.end(url);
       db.get('stats', function (err, value) {
         var todaysDate = moment().format('MMMM Do, YYYY');
-        if (statsTodayDate!==todaysDate)
-        {
+        if (statsTodayDate !== todaysDate) {
           statsBitsMadeToday = 1;
           statsTodayDate = todaysDate;
-        }
-        else {
+        } else {
           statsBitsMadeToday = statsBitsMadeToday + 1;
         }
         var count = parseInt(value) + 1;
@@ -95,12 +93,11 @@ router.get('/stats', function(req, res, next) {
       next();
     } else {
       var todaysDate = moment().format('MMMM Do, YYYY');
-      if (statsTodayDate !== todaysDate)
-      {
+      if (statsTodayDate !== todaysDate) {
         statsTodayDate = todaysDate;
         statsBitsMadeToday = 0;
       }
-      res.render('pages/stats', { stats: value, startDate: dateOfStart, startTime: timeOfStart, bitsToday: statsBitsMadeToday });
+      res.render('pages/stats', { bitsAlltime: value, startDate: dateOfStart, startTime: timeOfStart, bitsToday: statsBitsMadeToday });
     }
   });
 });

@@ -1,11 +1,11 @@
 <%- include ../partials/head.ejs %>
-<title>Bit: <%= bitId %></title>
+<title><%= bitId %></title>
 <%- include ../partials/header.ejs %>
 
 <div class="bitWrapper">
-  <h3 class="bitTitle"><%= bitId %></h3>
-  <h4 class="bit"><%= bit %></h4>
-  <a href="/" class="backLink">Back</a>
+  <h3 class="mainTitle"><%= bitId %></h3>
+  <a href="/" class="backLink backBit">Back to Homepage</a>
+  <p class="bit"><%= bit %></p>
 </div>
 
 <%- include ../partials/footer.ejs %>

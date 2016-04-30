@@ -72,6 +72,17 @@ label {
   word-wrap: break-word;
 }
 
+.backBit {
+  text-align: center;
+  display: block;
+  margin-top: -20px;
+  margin-bottom: 5px;
+}
+
+.bit {
+  font-size: 20px;
+}
+
 .errorWrapper {
   position: absolute;
   top: 50%;
