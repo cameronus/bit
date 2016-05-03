@@ -150,9 +150,5 @@ label {
   margin: auto;
   width: 100px;
   height: 100px;
-  margin-top: -1.5em;
-}
-
-iframe {
-  border: none;
+  margin-top: 0px;
 }

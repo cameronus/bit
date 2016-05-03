@@ -15,8 +15,10 @@ $(function() {
             +     "<b><textarea id='selectLink' type='text' onclick='this.focus(); this.select(); document.execCommand(\"copy\")' readonly='readonly'>"
             +     response
             +     "</textarea></b><br/>"
+            +     "<div id='qrDiv'>"
             +     "<img id='qr' src='https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + response + "' onclick='window.print()' />"
-            +      "</p>",
+            +     "</div>"
+            +     "</p>",
             type: "success"});
       $('#text').val('');
       $('#permanent').attr('checked', false);

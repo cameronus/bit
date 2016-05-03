@@ -65,3 +65,19 @@
     font-size: 10px;
   }
 }
+
+@media only print {
+  body * {
+    visibility: hidden;
+  }
+
+  #qrDiv, #qrDiv * {
+    visibility: visible;
+  }
+
+  #qrDiv {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
