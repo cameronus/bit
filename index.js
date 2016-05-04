@@ -17,17 +17,23 @@ shortid.seed(6899);
 var statsTodayDate = moment().format('MMMM Do, YYYY');
 var statsBitsMadeToday = 0;
 
+var startMoment = moment();
+/*
+Total bits created before last restart
+NOTE: THIS IS MANUAL
+*/
+var totalBitsBeforeRestart = 150;
+const firstDay = moment("04 16 2016", "MM DD YYYY");
+
+var db = levelup('./bit', { db: require('memdown') });
+db.put('stats', 0);
+var key = new NodeRSA({b: 512});
+
 var lex = letsencrypt.create({
   configDir: require('os').homedir() + '/letsencrypt/etc', approveRegistration: function (hostname, cb) {
     cb(null, { domains: [hostname], email: 'cameroncjones4@gmail.com', agreeTos: true });
   }
 });
-
-var db = levelup('./bit', { db: require('memdown') });
-db.put('stats', 0);
-var key = new NodeRSA({b: 512});
-var dateOfStart = moment().format('MMMM Do, YYYY');
-var timeOfStart = moment().format('h:mm:ss A');
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
@@ -97,7 +103,19 @@ router.get('/stats', function(req, res, next) {
         statsTodayDate = todaysDate;
         statsBitsMadeToday = 0;
       }
-      res.render('pages/stats', { bitsAlltime: value, startDate: dateOfStart, startTime: timeOfStart, bitsToday: statsBitsMadeToday });
+      var allBitsBeforeToday = totalBitsBeforeRestart + parseInt(value) - statsBitsMadeToday;
+      var daysSiteUp = Math.round(moment.duration(moment().diff(firstDay)).asDays()-1);
+      var averageBitsPerDay = Math.round(allBitsBeforeToday/daysSiteUp);
+      res.render('pages/stats', {
+        bitsAlltime: value,
+        startFromNow: startMoment.calendar(),
+        bitsToday: statsBitsMadeToday,
+        avgBitsPerDay: averageBitsPerDay,
+        startDay: firstDay.format("MMMM Do, YYYY"),
+        restartDay: startMoment.format("MMMM Do, YYYY"),
+        bitsBeforeRestart: totalBitsBeforeRestart,
+        allBitsEver: totalBitsBeforeRestart + parseInt(value)
+      });
     }
   });
 });

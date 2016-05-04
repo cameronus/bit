@@ -4,18 +4,22 @@
 
 <div id="statsWrapper">
   <h1 class="mainTitle">Stats</h1>
-  <% if (bitsToday == 1) { %>
-    <p class="regularText"><strong><%= bitsToday %> bit</strong> has been made <strong>today</strong>.</p>
-  <% } else {%>
-    <p class="regularText"><strong><%= bitsToday %> bits</strong> have been made <strong>today</strong>.</p>
-  <% } %>
-  <% if (bitsAlltime == 1) { %>
-    <p class="regularText"><strong><%= bitsAlltime %> bit</strong> has been made since <strong>last restart</strong>.</p>
-  <% } else {%>
-    <p class="regularText"><strong><%= bitsAlltime %> bits</strong> have been made since <strong>last restart</strong>.</p>
-  <% } %>
-  <p class="regularText">Last restart on <strong><%= startDate %></strong> at <strong><%= startTime %></strong>.</p>
-  <p class="regularText"><strong>150 bits</strong> made from <strong>April 16th-29th</strong> in <strong>2016</strong>.</p>
+  <table class="tables regularText">
+    <% if (bitsToday == 1) { %>
+      <p class="regularText"><strong><%= bitsToday %> bit</strong> has been made <strong>today</strong>.</p>
+    <% } else {%>
+      <p class="regularText"><strong><%= bitsToday %> bits</strong> have been made <strong>today</strong>.</p>
+    <% } %>
+    <% if (bitsAlltime == 1) { %>
+      <p class="regularText"><strong><%= bitsAlltime %> bit</strong> has been made since <strong>last restart</strong>.</p>
+    <% } else {%>
+      <p class="regularText"><strong><%= bitsAlltime %> bits</strong> have been made since <strong>last restart</strong>.</p>
+    <% } %>
+    <p class="regularText"><strong><%= bitsBeforeRestart %> bits</strong> made from <strong><%= startDay %></strong> to <strong><%= restartDay %></strong>.</p>
+    <p class="regularText"><strong><%= allBitsEver %> bits</strong> made in total.</p>
+    <p class="regularText"><strong><%= avgBitsPerDay %> bits</strong> made per day (on average)</p>
+    <p class="regularText">Last restart <strong><%= startFromNow %></strong>.</p>
+  </table>
   <a href="/" class="backLink">Back</a>
 </div>
 
