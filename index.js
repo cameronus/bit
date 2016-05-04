@@ -25,6 +25,7 @@ NOTE: THIS IS MANUAL
 var totalBitsBeforeRestart = 200;
 //const does not work in mozilla -- thanks travis-ci
 //const firstDay = moment("04 16 2016", "MM DD YYYY");
+var firstDay = moment("04 16 2016", "MM DD YYYY");
 
 var db = levelup('./bit', { db: require('memdown') });
 db.put('stats', 0);
