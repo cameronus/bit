@@ -81,6 +81,7 @@ label {
 
 .bit {
   font-size: 20px;
+  text-align: justify;
 }
 
 .errorWrapper {

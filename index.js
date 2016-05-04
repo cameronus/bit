@@ -22,8 +22,9 @@ var startMoment = moment();
 Total bits created before last restart
 NOTE: THIS IS MANUAL
 */
-var totalBitsBeforeRestart = 150;
-const firstDay = moment("04 16 2016", "MM DD YYYY");
+var totalBitsBeforeRestart = 200;
+//const does not work in mozilla -- thanks travis-ci
+//const firstDay = moment("04 16 2016", "MM DD YYYY");
 
 var db = levelup('./bit', { db: require('memdown') });
 db.put('stats', 0);
@@ -111,9 +112,6 @@ router.get('/stats', function(req, res, next) {
         startFromNow: startMoment.calendar(),
         bitsToday: statsBitsMadeToday,
         avgBitsPerDay: averageBitsPerDay,
-        startDay: firstDay.format("MMMM Do, YYYY"),
-        restartDay: startMoment.format("MMMM Do, YYYY"),
-        bitsBeforeRestart: totalBitsBeforeRestart,
         allBitsEver: totalBitsBeforeRestart + parseInt(value)
       });
     }

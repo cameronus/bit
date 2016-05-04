@@ -5,22 +5,41 @@
     margin: auto;
     margin-top: 300px;
   }
+
+  hr {
+    margin: 0;
+    color: lightgray;
+    background-color: lightgray;
+    border: none;
+    height: 1px;
+  }
+  body {
+    padding-bottom: 50px;
+  }
+  #footer {
+    background-color: white;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    padding: 0;
+  }
   #footer-left
   {
-    position: absolute;
-    bottom: 5px;
     width: 100%;
     font-size: 12px;
+    height: 15px;
     margin: 0;
+    margin-bottom: 5px;
   }
   #footer-right
   {
-    position: absolute;
-    bottom: 30px;
     width: 100%;
     font-size: 12px;
+    height: 15px;
     margin: 0;
+    margin-top: 5px;
   }
+
   .bitWrapper {
     text-align: center;
     width: 80%;
@@ -63,6 +82,24 @@
 @media only screen and (max-width: 320px) {
   .subtitles {
     font-size: 10px;
+  }
+}
+
+@media only screen and (max-height: 400px) /*iphone 5*/
+{
+  .mainTitle {
+    font-size: 2.5em;
+  }
+
+  .bitWrapper {
+    position: static;
+    transform: none;
+    width: 90%;
+    margin: auto;
+  }
+
+  #form {
+    margin-top: 1%;
   }
 }
 
