@@ -3,10 +3,10 @@
     width: 80%;
     height: 80%;
     margin: auto;
-    margin-top: 300px;
+    margin-top: 100px;
   }
 
-  hr {
+  hr.footerhr {
     margin: 0;
     color: lightgray;
     background-color: lightgray;
@@ -100,6 +100,10 @@
 
   #form {
     margin-top: 1%;
+  }
+
+  .regularText {
+    font-size: 14px;
   }
 }
 

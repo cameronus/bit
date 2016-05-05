@@ -153,3 +153,7 @@ label {
   height: 100px;
   margin-top: 0px;
 }
+
+hr.footerhr {
+  display:none;
+}
