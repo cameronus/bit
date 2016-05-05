@@ -10,14 +10,16 @@ $(function() {
     }).done(function(response) {
       swal({title: "<h1 class='mainTitle'>Bit created!</h1>",
             html: "<p class='regularText'>"
-            +     "Click on this link to copy to clipboard <br>"
-            +     "(not supported in Safari): <br>"
-            +     "<b><textarea id='selectLink' type='text' onclick='this.focus(); this.select(); document.execCommand(\"copy\")' readonly='readonly'>"
-            +     response
-            +     "</textarea></b><br/>"
-            +     "<div id='qrDiv'>"
-            +     "<img id='qr' src='https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + response + "' onclick='window.print()' />"
-            +     "</div>"
+            +       "<div id='swalExtraInfo'>"
+            +        "Click on this link to copy to clipboard <br>"
+            +        "(not supported in Safari): <br>"
+            +       "</div>"
+            +       "<b><textarea id='selectLink' type='text' onclick='this.focus(); this.select(); document.execCommand(\"copy\")' readonly='readonly'>"
+            +         response
+            +       "</textarea></b><br/>"
+            +       "<div id='qrDiv'>"
+            +         "<img id='qr' src='https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + response + "' onclick='window.print()' />"
+            +       "</div>"
             +     "</p>",
             type: "success"});
       $('#text').val('');

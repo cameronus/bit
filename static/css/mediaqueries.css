@@ -1,9 +1,9 @@
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1500px) {
   #form {
     width: 80%;
     height: 80%;
     margin: auto;
-    margin-top: 100px;
+    margin-top: 13%;
   }
 
   hr.footerhr {
@@ -100,6 +100,10 @@
 
   #form {
     margin-top: 1%;
+  }
+
+  #swalExtraInfo {
+    display: none;
   }
 
   .regularText {
