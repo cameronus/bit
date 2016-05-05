@@ -1,9 +1,13 @@
-@media only screen and (max-width: 1500px) {
+@media only screen and (max-width: 900px) {
   #form {
     width: 80%;
-    height: 80%;
+    height: 70%;
     margin: auto;
     margin-top: 13%;
+  }
+
+  #text {
+    height: 30vh;
   }
 
   hr.footerhr {
