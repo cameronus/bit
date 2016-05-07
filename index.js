@@ -11,6 +11,7 @@ var moment = require('moment');
 var app = express();
 var router = express.Router();
 var port = process.env.PORT || 80;
+var autolinkjs = require('autolink-js');
 shortid.seed(6899);
 
 /* Today's date and bits made today for stats */
@@ -126,7 +127,7 @@ router.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
     if (err) {
       next();
     } else {
-      var decryptedValue = key.decrypt(value, 'utf8');
+      var decryptedValue = key.decrypt(value, 'utf8').autoLink();
       res.render('pages/bit', { bitId: cleanedId, bit: decryptedValue });
       if (!bitId.includes('~')) {
         db.del(cleanedId);
