@@ -48,6 +48,8 @@
     text-align: center;
     width: 80%;
     word-break: normal;
+    transform: none;
+    margin: auto;
   }
 
   .errorWrapper {
