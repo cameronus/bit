@@ -7,26 +7,20 @@ var shortid = require('shortid');
 var bodyParser = require('body-parser');
 var levelup = require('levelup');
 var NodeRSA = require('node-rsa');
+var crypto = require('crypto');
 var moment = require('moment');
+var marky = require("marky-markdown")
 var app = express();
 var router = express.Router();
 var port = process.env.PORT || 80;
-var autolinkjs = require('autolink-js');
 shortid.seed(6899);
 
-/* Today's date and bits made today for stats */
+moment().utcOffset("-07:00");
+var firstDay = moment("04 16 2016", "MM DD YYYY");
 var statsTodayDate = moment().format('MMMM Do, YYYY');
 var statsBitsMadeToday = 0;
-
-var startMoment = moment();
-/*
-Total bits created before last restart
-NOTE: THIS IS MANUAL
-*/
+// NOTE: THIS IS MANUAL AND SHOULD BE EDITED BEFORE EVERY PRODUCTION RESTART
 var totalBitsBeforeRestart = 200;
-//const does not work in mozilla -- thanks travis-ci
-//const firstDay = moment("04 16 2016", "MM DD YYYY");
-var firstDay = moment("04 16 2016", "MM DD YYYY");
 
 var db = levelup('./bit', { db: require('memdown') });
 db.put('stats', 0);
@@ -77,6 +71,7 @@ router.post('/', function(req, res) {
     } else {
       bitId = generatedId;
     }
+    var bitText = marky(bitText).html();
     var encryptedBitText = key.encrypt(bitText, 'base64');
     db.put(bitId, encryptedBitText, function(err) {
       var url = req.protocol + '://' + req.hostname + '/' + bitId + '/';
@@ -87,7 +82,7 @@ router.post('/', function(req, res) {
           statsBitsMadeToday = 1;
           statsTodayDate = todaysDate;
         } else {
-          statsBitsMadeToday = statsBitsMadeToday + 1;
+          statsBitsMadeToday++;
         }
         var count = parseInt(value) + 1;
         db.put('stats', count);
@@ -127,7 +122,7 @@ router.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
     if (err) {
       next();
     } else {
-      var decryptedValue = key.decrypt(value, 'utf8').autoLink();
+      var decryptedValue = key.decrypt(value, 'utf8');
       res.render('pages/bit', { bitId: cleanedId, bit: decryptedValue });
       if (!bitId.includes('~')) {
         db.del(cleanedId);
