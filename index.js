@@ -15,7 +15,6 @@ var router = express.Router();
 var port = process.env.PORT || 80;
 shortid.seed(6899);
 
-moment().utcOffset("-07:00");
 var firstDay = moment("04 16 2016", "MM DD YYYY");
 var statsTodayDate = moment().format('MMMM Do, YYYY');
 var statsBitsMadeToday = 0;
