@@ -37,4 +37,9 @@ $(function() {
       }
     });
   });
+  var wrapper = $('.bitWrapper').height();
+  var viewport = $(window).height();
+  if (wrapper > viewport) {
+    $('#footer').addClass('kill');
+  }
 });
