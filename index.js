@@ -21,7 +21,7 @@ var statsTodayDate = moment().format('MMMM Do, YYYY');
 var statsBitsMadeToday = 0;
 var startMoment = moment();
 // NOTE: THIS IS MANUAL AND SHOULD BE EDITED BEFORE EVERY PRODUCTION RESTART
-var totalBitsBeforeRestart = 200;
+var totalBitsBeforeRestart = 260;
 
 var db = levelup('./bit', { db: require('memdown') });
 db.put('stats', 0);
