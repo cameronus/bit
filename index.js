@@ -9,7 +9,7 @@ var levelup = require('levelup');
 var NodeRSA = require('node-rsa');
 var crypto = require('crypto');
 var moment = require('moment');
-var marky = require("marky-markdown")
+var marky = require('marky-markdown');
 var app = express();
 var router = express.Router();
 var port = process.env.PORT || 80;
@@ -19,6 +19,7 @@ moment().utcOffset("-07:00");
 var firstDay = moment("04 16 2016", "MM DD YYYY");
 var statsTodayDate = moment().format('MMMM Do, YYYY');
 var statsBitsMadeToday = 0;
+var startMoment = moment();
 // NOTE: THIS IS MANUAL AND SHOULD BE EDITED BEFORE EVERY PRODUCTION RESTART
 var totalBitsBeforeRestart = 200;
 
@@ -57,11 +58,14 @@ router.post('/', function(req, res) {
   var sess = req.session;
   var hidden = req.body.hidden;
   var bitText = req.body.text;
+  var bitLength = bitText.length;
 
   if (hidden != sess.hidden) {
     res.status(400).end();
   } else if (bitText === '') {
     res.status(400).send('Enter something.');
+  } else if (bitLength > 10000) {
+    res.status(400).send('Bit is too long.');
   } else {
     res.status(200);
     var generatedId = shortid.generate();
