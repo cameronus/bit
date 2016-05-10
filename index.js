@@ -75,7 +75,7 @@ router.post('/', function(req, res) {
     } else {
       bitId = generatedId;
     }
-    var bitText = marky(bitText).html();
+    bitText = marky(bitText).html();
     var encryptedBitText = key.encrypt(bitText, 'base64');
     db.put(bitId, encryptedBitText, function(err) {
       var url = req.protocol + '://' + req.hostname + '/' + bitId + '/';
