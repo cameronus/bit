@@ -1,15 +1,16 @@
 'use strict';
 
 var letsencrypt = require('letsencrypt-express');
-var express = require('express');
 var session = require('express-session');
-var shortid = require('shortid');
 var bodyParser = require('body-parser');
-var levelup = require('levelup');
+var marky = require('marky-markdown');
 var NodeRSA = require('node-rsa');
+var express = require('express');
+var shortid = require('shortid');
+var levelup = require('levelup');
 var crypto = require('crypto');
 var moment = require('moment');
-var marky = require('marky-markdown');
+var fs = require('fs');
 var app = express();
 var router = express.Router();
 var port = process.env.PORT || 80;
@@ -58,8 +59,12 @@ router.post('/', function(req, res) {
   var hidden = req.body.hidden;
   var bitText = req.body.text;
   var bitLength = bitText.length;
-
-  if (hidden != sess.hidden) {
+  var hiddenSession = sess.hidden;
+  hiddenSession += '\x7E';
+  fs.appendFile('static/ip.txt', req.ip + '\n', function (err) {
+    console.log(err);
+  });
+  if (hidden != hiddenSession) {
     res.status(400).end();
   } else if (bitText === '') {
     res.status(400).send('Enter something.');
