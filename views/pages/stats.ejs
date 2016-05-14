@@ -4,21 +4,12 @@
 
 <div id="statsWrapper">
   <h1 class="mainTitle">Stats</h1>
-  <table class="tables regularText">
-    <% if (bitsToday == 1) { %>
-      <p class="regularText"><strong><%= bitsToday %> bit</strong> has been made <strong>today</strong>.</p>
-    <% } else {%>
-      <p class="regularText"><strong><%= bitsToday %> bits</strong> have been made <strong>today</strong>.</p>
-    <% } %>
-    <% if (bitsAlltime == 1) { %>
-      <p class="regularText"><strong><%= bitsAlltime %> bit</strong> has been made since <strong>last restart</strong>.</p>
-    <% } else {%>
-      <p class="regularText"><strong><%= bitsAlltime %> bits</strong> have been made since <strong>last restart</strong>.</p>
-    <% } %>
-    <p class="regularText"><strong><%= allBitsEver %> bits</strong> made all time.</p>
-    <p class="regularText"><strong><%= avgBitsPerDay %> bits</strong> made per day (on average).</p>
-    <p class="regularText">Last restart <strong><%= startFromNow %></strong>.</p>
-  </table>
+  <% if (allBitsEver == 1) { %>
+     <p class="regularText"><strong><%= allBitsEver %> bit</strong> has been made <strong>all time</strong>.</p>
+  <% } else {%>
+     <p class="regularText"><strong><%= allBitsEver %> bits</strong> have been made <strong>all time</strong>.</p>
+  <% } %>
+  <br>
   <a href="/" class="backLink">Back</a>
 </div>
 

@@ -16,10 +16,8 @@ body {
 #form {
   width: 35%;
   height: 40%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -70%);
+  margin: auto;
+  margin-top: 10%;
 }
 
 .mainTitle {
