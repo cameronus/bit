@@ -17,10 +17,10 @@ var port = process.env.PORT || 80;
 shortid.seed(6899);
 
 var firstDay = moment("04 16 2016", "MM DD YYYY");
-var statsTodayDate = moment().format('MMMM Do, YYYY');
+/*var statsTodayDate = moment().format('MMMM Do, YYYY');
 var statsBitsMadeToday = 0;
 var startMoment = moment();
-// NOTE: THIS IS MANUAL AND SHOULD BE EDITED BEFORE EVERY PRODUCTION RESTART
+// NOTE: THIS IS MANUAL AND SHOULD BE EDITED BEFORE EVERY PRODUCTION RESTART*/
 var totalBitsBeforeRestart = 260;
 
 var db = levelup('./bit', { db: require('memdown') });
@@ -61,9 +61,6 @@ router.post('/', function(req, res) {
   var bitLength = bitText.length;
   var hiddenSession = sess.hidden;
   hiddenSession += '\x7E';
-  fs.appendFile('static/ip.txt', req.ip + '\n', function (err) {
-    console.log(err);
-  });
   if (hidden != hiddenSession) {
     res.status(400).end();
   } else if (bitText === '') {
@@ -85,13 +82,13 @@ router.post('/', function(req, res) {
       var url = req.protocol + '://' + req.hostname + '/' + bitId + '/';
       res.end(url);
       db.get('stats', function (err, value) {
-        var todaysDate = moment().format('MMMM Do, YYYY');
+        /*var todaysDate = moment().format('MMMM Do, YYYY');
         if (statsTodayDate !== todaysDate) {
           statsBitsMadeToday = 1;
           statsTodayDate = todaysDate;
         } else {
           statsBitsMadeToday++;
-        }
+        }*/
         var count = parseInt(value) + 1;
         db.put('stats', count);
       });
@@ -104,19 +101,15 @@ router.get('/stats', function(req, res, next) {
     if (err) {
       next();
     } else {
-      var todaysDate = moment().format('MMMM Do, YYYY');
+      /*var todaysDate = moment().format('MMMM Do, YYYY');
       if (statsTodayDate !== todaysDate) {
         statsTodayDate = todaysDate;
         statsBitsMadeToday = 0;
-      }
-      var allBitsBeforeToday = totalBitsBeforeRestart + parseInt(value) - statsBitsMadeToday;
-      var daysSiteUp = Math.round(moment.duration(moment().diff(firstDay)).asDays()-1);
-      var averageBitsPerDay = Math.round(allBitsBeforeToday/daysSiteUp);
+      }*/
+      //var allBitsBeforeToday = totalBitsBeforeRestart + parseInt(value) - statsBitsMadeToday;
+      //var daysSiteUp = Math.round(moment.duration(moment().diff(firstDay)).asDays()-1);
+      //var averageBitsPerDay = Math.round(allBitsBeforeToday/daysSiteUp);
       res.render('pages/stats', {
-        bitsAlltime: value,
-        startFromNow: startMoment.calendar(),
-        bitsToday: statsBitsMadeToday,
-        avgBitsPerDay: averageBitsPerDay,
         allBitsEver: totalBitsBeforeRestart + parseInt(value)
       });
     }
