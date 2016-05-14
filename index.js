@@ -1,19 +1,20 @@
 'use strict';
 
-var letsencrypt = require('letsencrypt-express');
-var session = require('express-session');
-var bodyParser = require('body-parser');
-var marky = require('marky-markdown');
-var NodeRSA = require('node-rsa');
-var express = require('express');
-var shortid = require('shortid');
-var levelup = require('levelup');
-var crypto = require('crypto');
-var moment = require('moment');
-var fs = require('fs');
-var app = express();
-var router = express.Router();
-var port = process.env.PORT || 80;
+var letsencrypt = require('letsencrypt-express'),
+    ipfilter = require('express-ipfilter'),
+    session = require('express-session'),
+    bodyParser = require('body-parser'),
+    marky = require('marky-markdown'),
+    NodeRSA = require('node-rsa'),
+    express = require('express'),
+    shortid = require('shortid'),
+    levelup = require('levelup'),
+    crypto = require('crypto'),
+    moment = require('moment'),
+    fs = require('fs'),
+    app = express(),
+    router = express.Router(),
+    port = process.env.PORT || 80;
 shortid.seed(6899);
 
 var firstDay = moment("04 16 2016", "MM DD YYYY");
@@ -21,7 +22,10 @@ var firstDay = moment("04 16 2016", "MM DD YYYY");
 var statsBitsMadeToday = 0;
 var startMoment = moment();
 // NOTE: THIS IS MANUAL AND SHOULD BE EDITED BEFORE EVERY PRODUCTION RESTART*/
-var totalBitsBeforeRestart = 260;
+var totalBitsBeforeRestart = 300;
+
+
+var bannedIps = ['173.241.26.179'];
 
 var db = levelup('./bit', { db: require('memdown') });
 db.put('stats', 0);
@@ -34,6 +38,7 @@ var lex = letsencrypt.create({
 });
 
 app.set('view engine', 'ejs');
+app.use(ipfilter(bannedIps));
 app.use(express.static('static'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({

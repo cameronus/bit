@@ -4,9 +4,12 @@
 
 <div id="statsWrapper">
   <h1 class="mainTitle">Stats</h1>
-  <table class="tables regularText">
-    <p class="regularText"><strong><%= allBitsEver %> bits</strong> made all time.</p>
-  </table>
+  <% if (allBitsEver == 1) { %>
+     <p class="regularText"><strong><%= allBitsEver %> bit</strong> has been made <strong>all time</strong>.</p>
+  <% } else {%>
+     <p class="regularText"><strong><%= allBitsEver %> bits</strong> have been made <strong>all time</strong>.</p>
+  <% } %>
+  <br>
   <a href="/" class="backLink">Back</a>
 </div>
 
