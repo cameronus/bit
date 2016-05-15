@@ -3,7 +3,6 @@ $(function() {
   $("form").submit(function(event) {
     event.preventDefault();
     var formData = $(form).serialize();
-    formData += '\x7E';
     $.ajax({
       type: 'POST',
       url: $(form).attr('action'),

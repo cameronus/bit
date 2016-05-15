@@ -1,51 +1,50 @@
-'use strict';
+"use strict";
 
 var letsencrypt = require('letsencrypt-express'),
     ipfilter = require('express-ipfilter'),
     session = require('express-session'),
     bodyParser = require('body-parser'),
     marky = require('marky-markdown'),
+    config = require('./config.json'),
     NodeRSA = require('node-rsa'),
     express = require('express'),
     shortid = require('shortid'),
     levelup = require('levelup'),
+    memdown = require('memdown'),
     crypto = require('crypto'),
     moment = require('moment'),
+    os = require('os'),
     app = express(),
     router = express.Router(),
     port = process.env.PORT || 80;
 shortid.seed(6899);
 
 var statsBitsTotalIncrease = 0;
-var firstDay = moment("04 16 2016", "MM DD YYYY");
+var firstDay = moment('04 16 2016', 'MM DD YYYY');
 var statsTodayDate = moment().format('MMMM Do, YYYY');
 var statsBitsMadeToday = 0;
 var startMoment = moment();
-// NOTE: THIS IS MANUAL AND SHOULD BE EDITED BEFORE EVERY PRODUCTION RESTART
-var totalBitsBeforeRestart = 300;
+var totalBitsBeforeRestart = config.totalBitsBeforeRestart;
 
-
-var bannedIps = ['173.241.26.179'];
-
-var db = levelup('./bit', { db: require('memdown') });
+var db = levelup('./bit', { db: memdown });
 db.put('stats', 0);
-var key = new NodeRSA({b: 512});
+var key = new NodeRSA({ b: 512 });
 
 var lex = letsencrypt.create({
-  configDir: require('os').homedir() + '/letsencrypt/etc', approveRegistration: function (hostname, cb) {
-    cb(null, { domains: [hostname], email: 'cameroncjones4@gmail.com', agreeTos: true });
+  configDir: os.homedir() + '/letsencrypt/etc', approveRegistration: function (hostname, cb) {
+    cb(null, { domains: [hostname], email: config.certificateEmail, agreeTos: true });
   }
 });
 
 app.set('view engine', 'ejs');
-app.use(ipfilter(bannedIps, {log: false}));
+app.use(ipfilter(config.bannedIps, { log: false }));
 app.use(express.static('static'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
   genid: function(req) {
     return shortid.generate();
   },
-  secret: 'aj4jwhjdhbf78JDIOjkhk=-_8968fs_89itghJGJHFLDSJK6e3#_P-3',
+  secret: crypto.randomBytes(64).toString('hex'),
   resave: false,
   saveUninitialized: false
 }));
@@ -65,7 +64,6 @@ router.post('/', function(req, res) {
   var bitText = req.body.text;
   var bitLength = bitText.length;
   var hiddenSession = sess.hidden;
-  hiddenSession += '\x7E';
   if (hidden != hiddenSession) {
     res.status(400).end();
   } else if (bitText === '') {
@@ -172,5 +170,5 @@ function ensureSecure(req, res, next) {
 lex.onRequest = app;
 lex.listen([80], [443, 5001], function () {
   var protocol = ('requestCert' in this) ? 'https': 'http';
-  console.log("Magic happens at " + protocol + '://localhost:' + this.address().port);
+  console.log('Magic happens at ' + protocol + '://localhost:' + this.address().port);
 });
