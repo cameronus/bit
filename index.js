@@ -1,22 +1,22 @@
 "use strict";
 
 const letsencrypt = require('letsencrypt-express'),
-    ipfilter = require('express-ipfilter'),
-    session = require('express-session'),
-    bodyParser = require('body-parser'),
-    marky = require('marky-markdown'),
-    config = require('./config.json'),
-    NodeRSA = require('node-rsa'),
-    express = require('express'),
-    shortid = require('shortid'),
-    levelup = require('levelup'),
-    memdown = require('memdown'),
-    crypto = require('crypto'),
-    moment = require('moment'),
-    os = require('os'),
-    app = express(),
-    router = express.Router(),
-    port = process.env.PORT || 80;
+      ipfilter = require('express-ipfilter'),
+      session = require('express-session'),
+      bodyParser = require('body-parser'),
+      marky = require('marky-markdown'),
+      config = require('./config.json'),
+      NodeRSA = require('node-rsa'),
+      express = require('express'),
+      shortid = require('shortid'),
+      levelup = require('levelup'),
+      memdown = require('memdown'),
+      crypto = require('crypto'),
+      moment = require('moment'),
+      os = require('os'),
+      app = express(),
+      router = express.Router(),
+      port = process.env.PORT || 80;
 shortid.seed(6899);
 
 let statsBitsTotalIncrease = 0;
