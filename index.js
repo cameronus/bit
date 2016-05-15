@@ -17,6 +17,7 @@ var letsencrypt = require('letsencrypt-express'),
     port = process.env.PORT || 80;
 shortid.seed(6899);
 
+var statsBitsTotalIncrease = 0;
 var firstDay = moment("04 16 2016", "MM DD YYYY");
 /*var statsTodayDate = moment().format('MMMM Do, YYYY');
 var statsBitsMadeToday = 0;
@@ -86,17 +87,16 @@ router.post('/', function(req, res) {
     db.put(bitId, encryptedBitText, function(err) {
       var url = req.protocol + '://' + req.hostname + '/' + bitId + '/';
       res.end(url);
-      db.get('stats', function (err, value) {
-        /*var todaysDate = moment().format('MMMM Do, YYYY');
-        if (statsTodayDate !== todaysDate) {
-          statsBitsMadeToday = 1;
-          statsTodayDate = todaysDate;
-        } else {
-          statsBitsMadeToday++;
-        }*/
-        var count = parseInt(value) + 1;
-        db.put('stats', count);
-      });
+
+      statsBitsTotalIncrease += 1;
+
+      if (statsBitsTotalIncrease == 1) {
+        db.get('stats', function (err, value) {
+          var count = parseInt(value) + statsBitsTotalIncrease;
+          statsBitsTotalIncrease = 0;
+          db.put('stats', count);
+        });
+      }
     });
   }
 });
