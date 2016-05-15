@@ -17,10 +17,10 @@ var letsencrypt = require('letsencrypt-express'),
     port = process.env.PORT || 80;
 shortid.seed(6899);
 
+var statsBitsTotalIncrease = 0;
 var firstDay = moment("04 16 2016", "MM DD YYYY");
 /*var statsTodayDate = moment().format('MMMM Do, YYYY');
 var statsBitsMadeToday = 0;
-var statsBitsTotalIncrease = 0;
 var startMoment = moment();
 // NOTE: THIS IS MANUAL AND SHOULD BE EDITED BEFORE EVERY PRODUCTION RESTART*/
 var totalBitsBeforeRestart = 300;
