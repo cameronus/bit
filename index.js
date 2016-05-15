@@ -21,7 +21,7 @@ shortid.seed(6899);
 
 let statsBitsTotalIncrease = 0;
 const firstDay = moment('04 16 2016', 'MM DD YYYY');
-const statsTodayDate = moment().format('MMMM Do, YYYY');
+let statsTodayDate = moment().format('MMMM Do, YYYY');
 let statsBitsMadeToday = 0;
 const startMoment = moment();
 const totalBitsBeforeRestart = config.totalBitsBeforeRestart;
