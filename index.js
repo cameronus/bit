@@ -11,7 +11,6 @@ var letsencrypt = require('letsencrypt-express'),
     levelup = require('levelup'),
     crypto = require('crypto'),
     moment = require('moment'),
-    fs = require('fs'),
     app = express(),
     router = express.Router(),
     port = process.env.PORT || 80;
@@ -19,10 +18,10 @@ shortid.seed(6899);
 
 var statsBitsTotalIncrease = 0;
 var firstDay = moment("04 16 2016", "MM DD YYYY");
-/*var statsTodayDate = moment().format('MMMM Do, YYYY');
+var statsTodayDate = moment().format('MMMM Do, YYYY');
 var statsBitsMadeToday = 0;
 var startMoment = moment();
-// NOTE: THIS IS MANUAL AND SHOULD BE EDITED BEFORE EVERY PRODUCTION RESTART*/
+// NOTE: THIS IS MANUAL AND SHOULD BE EDITED BEFORE EVERY PRODUCTION RESTART
 var totalBitsBeforeRestart = 300;
 
 
@@ -88,6 +87,13 @@ router.post('/', function(req, res) {
       var url = req.protocol + '://' + req.hostname + '/' + bitId + '/';
       res.end(url);
 
+      var todaysDate = moment().format('MMMM Do, YYYY');
+      if (statsTodayDate !== todaysDate) {
+        statsBitsMadeToday = 1;
+        statsTodayDate = todaysDate;
+      } else {
+        statsBitsMadeToday++;
+      }
       statsBitsTotalIncrease += 1;
 
       if (statsBitsTotalIncrease == 1) {
@@ -106,15 +112,19 @@ router.get('/stats', function(req, res, next) {
     if (err) {
       next();
     } else {
-      /*var todaysDate = moment().format('MMMM Do, YYYY');
+      var todaysDate = moment().format('MMMM Do, YYYY');
       if (statsTodayDate !== todaysDate) {
         statsTodayDate = todaysDate;
         statsBitsMadeToday = 0;
-      }*/
-      //var allBitsBeforeToday = totalBitsBeforeRestart + parseInt(value) - statsBitsMadeToday;
-      //var daysSiteUp = Math.round(moment.duration(moment().diff(firstDay)).asDays()-1);
-      //var averageBitsPerDay = Math.round(allBitsBeforeToday/daysSiteUp);
+      }
+      var allBitsBeforeToday = totalBitsBeforeRestart + parseInt(value) - statsBitsMadeToday;
+      var daysSiteUp = Math.round(moment.duration(moment().diff(firstDay)).asDays()-1);
+      var averageBitsPerDay = Math.round(allBitsBeforeToday/daysSiteUp);
       res.render('pages/stats', {
+        bitsAlltime: value,
+        startFromNow: startMoment.calendar(),
+        bitsToday: statsBitsMadeToday,
+        avgBitsPerDay: averageBitsPerDay,
         allBitsEver: totalBitsBeforeRestart + parseInt(value)
       });
     }
