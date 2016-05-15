@@ -29,12 +29,12 @@ $(function() {
       if (data.responseText !== '') {
         swal({title: "<h1 class='mainTitle'>Error!</h1>", text: "<p class='regularText'>" + data.responseText + "</p>", type: "error" });
       } else if (data.status === 400) {
-        swal({title: "<h1 class='mainTitle'>Error!</h1>", text: "<p class='regularText'>Don't screw with me!</p>", type: "error", closeOnConfirm: false, allowOutsideClick: false, allowEscapeKey: false, confirmButtonText: "Reload", timer: 1500})
+        swal({title: "<h1 class='mainTitle'>Error!</h1>", text: "<p class='regularText'>A server error has occured. Please reload.</p>", type: "error", closeOnConfirm: false, allowOutsideClick: false, allowEscapeKey: false, confirmButtonText: "Reload", timer: 1500})
         .then(function() {
           location.reload();
         });
       } else {
-        swal({title: "<h1 class='mainTitle'>Error!</h1>", text: "<p class='regularText'>A network error has occurred!</p>", type: "error" });
+        swal({title: "<h1 class='mainTitle'>Error!</h1>", text: "<p class='regularText'>A network error has occurred.</p>", type: "error" });
       }
     });
   });

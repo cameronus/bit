@@ -38,7 +38,7 @@ var lex = letsencrypt.create({
 });
 
 app.set('view engine', 'ejs');
-app.use(ipfilter(bannedIps));
+app.use(ipfilter(bannedIps, {log: 'false'}));
 app.use(express.static('static'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
