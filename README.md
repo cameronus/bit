@@ -14,7 +14,7 @@ Your bit will self-destruct after someone views it (unless set otherwise), which
 
 ## How do I use bit?
 
-1. Visit [our website](http://bitapp.cf/).
+1. Visit [our website](#) [WEBSITE IS DOWN].
 
 2. Enter your text into the large box.
 
