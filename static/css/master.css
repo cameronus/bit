@@ -52,12 +52,22 @@ label {
   bottom: 10px;
 }
 
-.btn-success {
-  display: block;
-  width: 100%;
-  margin-top: -20px;
+.btn {
+  display: inline-block;
+  width: 50%;
+  margin-top: -30px;
   border-radius: 0;
+}
+
+.btn:focus {
+  outline: none !important;
+}
+
+.btn-success {
   border-bottom-left-radius: 7px;
+}
+
+.btn-danger {
   border-bottom-right-radius: 7px;
 }
 

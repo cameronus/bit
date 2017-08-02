@@ -2,7 +2,7 @@
 <title>Bit</title>
 <%- include ../partials/header.ejs %>
 
-<form id="form" method="post" action="/">
+<form id="form" method="post">
   <h1 class="mainTitle">bit</h1>
   <div class="text">
     <textarea id="text" class="form-control" name="text" autofocus maxlength="10000"></textarea>
@@ -11,7 +11,7 @@
     <input type="hidden" id="hidden" name="hidden" value="<%= hidden %>">
   </div><br>
   <div class="button">
-    <button type="submit" class="btn btn-success">Create Bit</button>
+    <button type="button" class="btn btn-success" onclick="createBit($('#text').val())">Create Bit</button><button type="button" class="btn btn-danger" onclick="createEncryptedBit()">Create Encrypted Bit</button>
   </div>
   <br/>
   <p class="regularText subtitles">

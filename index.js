@@ -14,6 +14,15 @@ const port = 80
 
 mongoose.connect('mongodb://localhost/bit')
 
+const renderer = new marked.Renderer()
+renderer.heading = (text, level) => {
+  return '<h' + level + '>' + text + '</h' + level + '>';
+}
+marked.setOptions({
+  renderer: renderer,
+  sanitize: true
+})
+
 app.use(bodyparser.urlencoded({ extended: false }))
 app.use(express.static('static'))
 app.use(session({
@@ -49,31 +58,32 @@ app.post('/', function(req, res) {
   const hiddenSession = sess.hidden
   if (hidden != hiddenSession) {
     return res.status(400).json({
-      message: '',
+      message: 'Please don\'t tamper with bit!',
       reload: true
     })
   }
   if (content === '') {
     return res.status(400).json({
-      message: 'Please enter text to create the bit.',
+      message: 'Your bit must have text.',
       reload: false
     })
   }
   if (content.length > 10000) {
     return res.status(400).json({
-      message: 'Bit is too long.',
+      message: 'Your bit is too long.',
       reload: false
     })
   }
   res.status(200)
   let bitid = shortid.generate()
-  if (req.body.permanent) bitid += '~'
+  console.log(req.body.permanent);
+  if (req.body.permanent == true) bitid += '~'
   const processedContent = marked(content)
   console.log(processedContent)
   /*const encryptedBitText = key.encrypt(bitText, 'base64')
   db.put(bitId, encryptedBitText, function(err) {
-    const url = req.protocol + '://' + req.hostname + '/' + bitId + '/'
-    res.end(url)
+  const url = req.protocol + '://' + req.hostname + '/' + bitId + '/'
+  res.end(url)
     const todaysDate = moment().format('MMMM Do, YYYY')
     if (statsTodayDate !== todaysDate) {
       statsBitsMadeToday = 1
@@ -91,6 +101,8 @@ app.post('/', function(req, res) {
       })
     }
   })*/
+  const url = 'https://' + req.hostname + '/' + bitid + '/'
+  res.end(url)
 })
 
 app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
