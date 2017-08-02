@@ -76,13 +76,11 @@ label {
   word-wrap: break-word;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
 }
 
 .backBit {
-  text-align: center;
-  display: block;
   margin-top: -20px;
-  margin-bottom: 5px;
 }
 
 .bit {
@@ -129,7 +127,7 @@ label {
 .footertext {
   text-align: center;
   display: block;
-  font-weight: 200;
+  font-weight: 400;
 }
 
 #selectLink {
