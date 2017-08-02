@@ -10,9 +10,7 @@ function createEncryptedBit() {
   swal({
     title: 'Enter key to encrypt bit',
     input: 'text',
-    showCancelButton: false,
     confirmButtonText: 'Encrypt',
-    allowOutsideClick: false,
     preConfirm: (key) => {
       return new Promise((resolve, reject) => {
         if (key.trim() == '') {
@@ -23,7 +21,20 @@ function createEncryptedBit() {
       })
     },
   }).then((password) => {
-    createBit($('#text').val() + password)
+    if (password.trim() == '') {
+      createBit($('#text').val())
+    } else {
+      triplesec.encrypt({
+        data: new triplesec.Buffer($('#text').val()),
+        key: new triplesec.Buffer(password),
+        progress_hook: (obj) => {}
+      }, (err, buff) => {
+        if (!err) {
+          const ciphertext = buff.toString('hex')
+          createBit(ciphertext)
+        }
+      })
+    }
   })
 }
 

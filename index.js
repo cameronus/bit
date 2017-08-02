@@ -14,6 +14,8 @@ const port = 80
 
 mongoose.connect('mongodb://localhost/bit')
 
+shortid.seed(1738)
+
 const renderer = new marked.Renderer()
 renderer.heading = (text, level) => {
   return '<h' + level + '>' + text + '</h' + level + '>';
@@ -75,9 +77,7 @@ app.post('/', function(req, res) {
     })
   }
   res.status(200)
-  let bitid = shortid.generate()
-  console.log(req.body.permanent);
-  if (req.body.permanent == true) bitid += '~'
+  let bitid = req.body.permanent === 'true' ? shortid.generate() + '~' : shortid.generate()
   const processedContent = marked(content)
   console.log(processedContent)
   /*const encryptedBitText = key.encrypt(bitText, 'base64')
