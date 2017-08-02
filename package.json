@@ -29,9 +29,11 @@
     "express-session": "^1.15.4",
     "letsencrypt-express": "^1.2.0",
     "levelup": "^1.3.9",
+    "marked": "^0.3.6",
     "marky-markdown": "^7.0.2",
     "memdown": "^1.2.4",
     "moment": "^2.18.1",
+    "mongoose": "^4.11.5",
     "node-rsa": "^0.3.4",
     "shortid": "^2.2.8",
     "spdy": "^3.4.7"
