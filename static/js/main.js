@@ -62,7 +62,8 @@ function createBit(text) {
       type: 'success'
     })
     $('#text').val('')
-    $('#permanent').attr('checked', false)
+    $('#permanent').prop('checked', false)
+    console.log('done');
   }).fail(function(data) {
     error(data.responseJSON.message, data.responseJSON.reload)
   })

@@ -89,37 +89,22 @@ app.post('/', function(req, res) {
   })
   bit.save((err, output) => {
     if (err) return console.error(err)
+    const url = req.protocol + '://' + req.hostname + '/' + bitid + '/'
+    res.end(url)
   })
-
-  /*const encryptedBitText = key.encrypt(bitText, 'base64')
-  db.put(bitId, encryptedBitText, function(err) {
-  const url = req.protocol + '://' + req.hostname + '/' + bitId + '/'
-  res.end(url)
-    const todaysDate = moment().format('MMMM Do, YYYY')
-    if (statsTodayDate !== todaysDate) {
-      statsBitsMadeToday = 1
-      statsTodayDate = todaysDate
-    } else {
-      statsBitsMadeToday++
-    }
-    statsBitsTotalIncrease += 1
-
-    if (statsBitsTotalIncrease == 1) {
-      db.get('stats', function (err, value) {
-        const count = parseInt(value) + statsBitsTotalIncrease
-        statsBitsTotalIncrease = 0
-        db.put('stats', count)
-      })
-    }
-  })*/
-  const url = 'https://' + req.hostname + '/' + bitid + '/'
-  res.end(url)
 })
 
 app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
   const bitid = req.params.bit
   const cleanid = bitid.replace(/\/$/, '')
-  console.log(cleanid)
+  Bit.find({ _id: cleanid }, (err, bits) => {
+    if (err || bits.length != 1) return next()
+    const bit = bits[0]
+    res.render('pages/bit', { bitId: cleanid, bit: bit.text })
+    if (!bit.permanent) {
+      bit.remove()
+    }
+  })
   // db.get(cleanedId, function (err, value) {
   //   if (err) {
   //     next()
