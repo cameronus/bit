@@ -8,6 +8,8 @@ const shortid = require('shortid')
 const crypto = require('crypto')
 const marked = require('marked')
 
+const Bit = require('./models/Bit')
+
 const app = express()
 
 const port = 80
@@ -80,6 +82,15 @@ app.post('/', function(req, res) {
   let bitid = req.body.permanent === 'true' ? shortid.generate() + '~' : shortid.generate()
   const processedContent = marked(content)
   console.log(processedContent)
+  const bit = new Bit({
+    _id: bitid,
+    text: processedContent,
+    permanent: req.body.permanent === 'true'
+  })
+  bit.save((err, output) => {
+    if (err) return console.error(err)
+  })
+
   /*const encryptedBitText = key.encrypt(bitText, 'base64')
   db.put(bitId, encryptedBitText, function(err) {
   const url = req.protocol + '://' + req.hostname + '/' + bitId + '/'
