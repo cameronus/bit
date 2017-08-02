@@ -4,7 +4,7 @@
   "description": "Bit provides a way to share text that disappears after being read.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/jshint/bin/jshint *.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -22,19 +22,19 @@
   },
   "homepage": "https://github.com/thecameronjones/bit#readme",
   "dependencies": {
-    "body-parser": "^1.15.0",
-    "ejs": "^2.4.1",
-    "express": "^4.13.4",
+    "body-parser": "^1.17.2",
+    "ejs": "^2.5.7",
+    "express": "^4.15.3",
     "express-ipfilter": "0.0.25",
-    "express-session": "^1.13.0",
-    "letsencrypt-express": "^1.1.5",
-    "levelup": "^1.3.1",
-    "marky-markdown": "^7.0.0",
-    "memdown": "^1.1.2",
-    "moment": "^2.13.0",
-    "node-rsa": "^0.3.2",
-    "shortid": "^2.2.6",
-    "spdy": "^3.2.3"
+    "express-session": "^1.15.4",
+    "letsencrypt-express": "^1.2.0",
+    "levelup": "^1.3.9",
+    "marky-markdown": "^7.0.2",
+    "memdown": "^1.2.4",
+    "moment": "^2.18.1",
+    "node-rsa": "^0.3.4",
+    "shortid": "^2.2.8",
+    "spdy": "^3.4.7"
   },
   "devDependencies": {
     "jshint": "^2.9.1"

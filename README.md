@@ -1,4 +1,4 @@
-# bit ![Build Status](https://travis-ci.org/thecameronjones/bit.svg?branch=master) [![GitHub version](https://badge.fury.io/gh/thecameronjones%2Fbit.svg)](https://badge.fury.io/gh/thecameronjones%2Fbit)
+# bit [![GitHub version](https://badge.fury.io/gh/thecameronjones%2Fbit.svg)](https://badge.fury.io/gh/thecameronjones%2Fbit)
 **bit** is a tool that lets you send messages in text (called _bits_) through links, and only the first person to go to the link, unless set otherwise, will receive the text.
 * [Why use bit?](#why-use-bit)
 * [How do I use bit?](#how-do-i-use-bit)
