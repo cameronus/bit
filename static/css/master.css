@@ -1,11 +1,128 @@
-html, body {
+body {
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.container {
   width: 100%;
   height: 100%;
-  font-family: 'Open Sans', sans-serif;
-  /*background: linear-gradient(to right, #0575e6, #021b79);*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  width: auto;
 }
 
 .title {
-  margin: 0;
   font-family: 'Spectral', serif;
+  font-size: 64px;
+  text-align: center;
+  margin: 0;
+}
+
+.buttons {
+  text-align: center;
+  margin-top: 5px;
+}
+
+i.material-icons {
+  font-size: 1.5rem;
+  color: white;
+  position: relative;
+  border-radius: 50%;
+  padding: 5px;
+  margin: 3px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+i.material-icons:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border: solid 2px;
+  transform: scale(0.8);
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+i.material-icons:hover:after {
+  transform: scale(1);
+}
+
+i.material-icons:nth-of-type(1) {
+  background-color: #cd8484;
+}
+
+i.material-icons:nth-of-type(1):hover {
+  color: #cd8484;
+}
+
+i.material-icons:nth-of-type(1):after {
+  border-color: #cd8484;
+}
+
+i.material-icons:nth-of-type(2) {
+  background-color: #44bb66;
+}
+
+i.material-icons:nth-of-type(2):hover {
+  color: #44bb66;
+}
+
+i.material-icons:nth-of-type(2):after {
+  border-color: #44bb66;
+}
+
+i.material-icons:hover {
+  background-color: transparent;
+  transform: rotate(10deg);
+  cursor: pointer;
+}
+
+
+@media (min-width: 601px) {
+  i.material-icons {
+    padding:10px;
+    margin:5px;
+    font-size:2rem;
+  }
+}
+
+@media (min-width: 993px) {
+  i.material-icons {
+    padding:14px;
+    margin:7px;
+    font-size:3rem;
+  }
+  i.material-icons:after {
+    border-width:3px;
+    top:-3px;
+    left:-3px;
+  }
+}
+
+#text, #key, #navigation {
+  display: none;
+}
+
+footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+#right {
+  margin-right: 20px;
+  float: right;
+}
+
+#left {
+  margin-left: 20px;
+  float: left;
 }

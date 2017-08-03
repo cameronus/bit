@@ -1,4 +1,4 @@
-$(document).ready(() => {
+/*$(document).ready(() => {
   const wrapper = $('.bitWrapper').height()
   const viewport = $(window).height()
   if (wrapper > viewport) {
@@ -67,4 +67,15 @@ function error(errorText, reload) {
           text: errorText,
           type: 'error' })
   }
+}*/
+
+function show(showKey) {
+  $('.title, .buttons').hide()
+  $('#text, #navigation').show()
+  if (showKey) $('#key').show()
+}
+
+function back() {
+  $('.title, .buttons').show()
+  $('#text, #key, #navigation').hide()
 }

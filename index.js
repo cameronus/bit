@@ -73,7 +73,7 @@ app.get('/', function(req, res) {
   const sess = req.session
   const hidden = shortid.generate()
   sess.hidden = hidden
-  res.render('pages/main', { hidden: hidden })
+  res.render('main', { hidden: hidden })
 })
 
 /* HANDLE BIT CREATION & ENCRYPTION */
@@ -157,6 +157,9 @@ app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
   })
 })
 
+/* SERVER STATIC FILES */
+app.use(express.static('static'))
+
 /* HANDLE 404 ERRORS */
 app.get('*', function(req, res) {
   const path = req.url
@@ -169,9 +172,6 @@ app.get('*', function(req, res) {
   }
   res.status(404).render('pages/error', { error: error })
 })
-
-/* SERVER STATIC FILES */
-app.use(express.static('static'))
 
 /* LISTEN ON SPECIFIED PORT */
 app.listen(port, () => {

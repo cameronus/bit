@@ -27,6 +27,7 @@
     "express": "^4.15.3",
     "express-ipfilter": "0.0.25",
     "express-session": "^1.15.4",
+    "hbs": "^4.0.1",
     "letsencrypt-express": "^1.2.0",
     "levelup": "^1.3.9",
     "marked": "^0.3.6",
