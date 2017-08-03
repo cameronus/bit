@@ -9,6 +9,10 @@ const bitSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  encrypted: {
+    type: Boolean,
+    required: true
+  },
   permanent: {
     type: Boolean,
     required: true

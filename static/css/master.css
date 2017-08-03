@@ -50,6 +50,7 @@ label {
 .subtitles {
   position: relative;
   bottom: 10px;
+  font-weight: 400;
 }
 
 .btn {

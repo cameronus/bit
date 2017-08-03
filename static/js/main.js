@@ -11,39 +11,19 @@ function createEncryptedBit() {
     title: 'Enter key to encrypt bit',
     input: 'text',
     confirmButtonText: 'Encrypt',
-    preConfirm: (key) => {
-      return new Promise((resolve, reject) => {
-        if (key.trim() == '') {
-          reject('Please enter a key to continue.')
-        } else {
-          resolve()
-        }
-      })
-    },
-  }).then((password) => {
-    if (password.trim() == '') {
-      createBit($('#text').val())
-    } else {
-      triplesec.encrypt({
-        data: new triplesec.Buffer($('#text').val()),
-        key: new triplesec.Buffer(password),
-        progress_hook: (obj) => {}
-      }, (err, buff) => {
-        if (!err) {
-          const ciphertext = buff.toString('hex')
-          createBit(ciphertext)
-        }
-      })
-    }
+  }).then((key) => {
+    createBit(key)
   })
 }
 
-function createBit(text) {
+function createBit(key) {
   $.ajax({
     type: 'POST',
     url: '/',
     data: {
-      text: text,
+      text: $('#text').val(),
+      key: key,
+      encrypted: key !== undefined,
       permanent: $('#permanent').is(':checked'),
       hidden: $('#hidden').val()
     }

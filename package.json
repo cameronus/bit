@@ -33,10 +33,11 @@
     "marky-markdown": "^7.0.2",
     "memdown": "^1.2.4",
     "moment": "^2.18.1",
-    "mongoose": "^4.11.5",
+    "mongoose": "^4.10.8",
     "node-rsa": "^0.3.4",
     "shortid": "^2.2.8",
-    "spdy": "^3.4.7"
+    "spdy": "^3.4.7",
+    "triplesec": "^3.0.25"
   },
   "devDependencies": {
     "jshint": "^2.9.1"

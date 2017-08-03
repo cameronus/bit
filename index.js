@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const shortid = require('shortid')
 const crypto = require('crypto')
 const marked = require('marked')
+const triplesec = require('triplesec')
 
 const Bit = require('./models/Bit')
 
@@ -14,6 +15,7 @@ const app = express()
 
 const port = 80
 
+mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost/bit')
 
 shortid.seed(1738)
@@ -66,7 +68,7 @@ app.post('/', function(req, res) {
       reload: true
     })
   }
-  if (content === '') {
+  if (content == '') {
     return res.status(400).json({
       message: 'Your bit must have text.',
       reload: false
@@ -78,19 +80,46 @@ app.post('/', function(req, res) {
       reload: false
     })
   }
+  if (req.body.encrypted == 'true' && req.body.key == '') {
+    return res.status(400).json({
+      message: 'Your key must have text.',
+      reload: false
+    })
+  }
   res.status(200)
-  let bitid = req.body.permanent === 'true' ? shortid.generate() + '~' : shortid.generate()
-  const processedContent = marked(content)
-  console.log(processedContent)
-  const bit = new Bit({
-    _id: bitid,
-    text: processedContent,
-    permanent: req.body.permanent === 'true'
-  })
-  bit.save((err, output) => {
-    if (err) return console.error(err)
-    const url = req.protocol + '://' + req.hostname + '/' + bitid + '/'
-    res.end(url)
+  let bitid = shortid.generate()
+  if (req.body.permanent == 'true') bitid += '~'
+  let key
+  content = marked(content)
+  if (req.body.encrypted == 'true') {
+    key = req.body.key
+  } else {
+    key = 'CONSTANTKEY'
+  }
+  triplesec.encrypt({
+    data: new triplesec.Buffer(content),
+    key: new triplesec.Buffer(key),
+    progress_hook: (obj) => {}
+  }, (err, buff) => {
+    if (!err) {
+      const processed = buff.toString('hex')
+      const bit = new Bit({
+        _id: bitid,
+        text: processed,
+        encrypted: req.body.encrypted == 'true',
+        permanent: req.body.permanent == 'true'
+      })
+      bit.save((err, output) => {
+        if (err) return console.error(err)
+        const url = req.protocol + '://' + req.hostname + '/' + bitid + '/'
+        res.end(url)
+      })
+    } else {
+      return res.status(400).json({
+        message: 'Encryption failed, please try again later.',
+        reload: false
+      })
+    }
   })
 })
 
