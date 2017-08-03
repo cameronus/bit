@@ -69,10 +69,15 @@ function error(errorText, reload) {
   }
 }*/
 
+'use strict'
+
 function show(showKey) {
+  window.bitEncrypted = showKey
   $('.title, .buttons').hide()
   $('.bit-creation, .key').show()
-  if (!showKey) $('.key').hide()
+  if (!showKey) {
+    $('.key').hide()
+  }
   $('#text').focus()
 }
 
@@ -84,6 +89,38 @@ function goBack() {
   $('#permanent').prop('checked', false)
 }
 
-function create() {
-  
+function createBit() {
+  $.ajax({
+    type: 'POST',
+    url: '/',
+    data: {
+      text: $('#text').val(),
+      key: $('#key').val(),
+      encrypted: window.bitEncrypted,
+      permanent: $('#permanent').is(':checked'),
+      hidden: $('#hidden').val()
+    }
+  }).done((response) => {
+    // swal({
+    //   title: 'Bit created!',
+    //   html: '<div id="swalExtraInfo">'
+    //   +        'Click on the link below to copy to clipboard: <br>'
+    //   +       '</div>'
+    //   +       '<b><textarea id="selectLink" type="text" onclick="this.focus();this.select();document.execCommand(\'copy\')" readonly="readonly">'
+    //   +         response
+    //   +       '</textarea></b><br/>'
+    //   +       '<div id="qrDiv">'
+    //   +         '<img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' + response + '" onclick="window.print()" />'
+    //   +       '</div>',
+    //   type: 'success'
+    // })
+    console.log(response)
+    alert(response)
+    $('#text').val('')
+    $('#key').val('')
+    $('#permanent').prop('checked', false)
+    console.log('done');
+  }).fail((data) => {
+    alert('error! ' + data.responseJSON.message)
+  })
 }

@@ -249,6 +249,7 @@ a:hover {
 
 #bit {
   font-size: 20px;
+  word-break: break-all;
 }
 
 #backLink {
