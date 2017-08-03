@@ -30,7 +30,6 @@ marked.setOptions({
 })
 
 app.use(bodyparser.urlencoded({ extended: false }))
-app.use(express.static('static'))
 app.use(session({
   genid: function(req) {
     return shortid.generate()
@@ -158,6 +157,8 @@ app.get('*', function(req, res) {
   }
   res.status(404).render('pages/error', { error: error })
 })
+
+app.use(express.static('static'))
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
