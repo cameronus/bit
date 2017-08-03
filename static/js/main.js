@@ -83,3 +83,7 @@ function goBack() {
   $('#key').val('')
   $('#permanent').prop('checked', false)
 }
+
+function create() {
+  
+}
