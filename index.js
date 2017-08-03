@@ -150,7 +150,7 @@ app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
   Bit.find({ _id: cleanid }, (err, bits) => {
     if (err || bits.length != 1) return next()
     const bit = bits[0]
-    res.render('pages/bit', { bitId: cleanid, bit: bit.text })
+    res.render('bit', { bitid: cleanid, bit: bit.text })
     if (!bit.permanent) {
       bit.remove()
     }
@@ -168,9 +168,9 @@ app.get('*', function(req, res) {
   if (regex.test(path)) {
     error = 'The bit you have tried to access has already disappeared or was never created.'
   } else {
-    error = 'The file you were looking for cannot be found.'
+    error = 'The page you were looking for cannot be found.'
   }
-  res.status(404).render('pages/error', { error: error })
+  res.status(404).render('error', { error: error })
 })
 
 /* LISTEN ON SPECIFIED PORT */

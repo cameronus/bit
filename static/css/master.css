@@ -202,12 +202,12 @@ footer {
   bottom: 0;
 }
 
-footer a {
+a {
   text-decoration: none;
   color: #51cbee;
 }
 
-footer a:hover {
+a:hover {
   color: #0088ff;
 }
 
@@ -219,4 +219,38 @@ footer a:hover {
 #left {
   margin-left: 20px;
   float: left;
+}
+
+#errorContent {
+  width: 25vw;
+}
+
+#errorTitle {
+  font-family: 'Spectral', serif;
+  font-size: 40px;
+}
+
+#error {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+#bitContent {
+  width: 40vw;
+  position: absolute;
+  top: 0;
+}
+
+#bitTitle {
+  text-align: center;
+  font-family: 'Spectral', serif;
+  font-size: 40px;
+}
+
+#bit {
+  font-size: 20px;
+}
+
+#backLink {
+  font-size: 20px;
 }
