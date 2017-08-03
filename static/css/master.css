@@ -28,83 +28,71 @@ body {
   margin-top: 5px;
 }
 
-i.material-icons {
-  font-size: 1.5rem;
+.icon {
+  fill: white;
   color: white;
   position: relative;
   border-radius: 50%;
-  padding: 5px;
-  margin: 3px;
-  transition: color 0.2s ease, background-color 0.2s ease;
+  margin: 7px;
+  padding: 14px;
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
 }
 
-i.material-icons:after {
+.icon svg {
+  transform: scale(0.9);
+}
+
+.icon, .icon svg {
+  width: 50px;
+  height: 50px;
+}
+
+.icon:after {
   content: "";
   width: 100%;
   height: 100%;
-  border: solid 2px;
+  border: solid 3px;
   transform: scale(0.8);
   position: absolute;
-  top: -2px;
-  left: -2px;
+  top: -3px;
+  left: -3px;
   border-radius: 50%;
   transition: all 0.3s ease;
 }
 
-i.material-icons:hover:after {
+.icon:hover:after {
   transform: scale(1);
 }
 
-i.material-icons:nth-of-type(1) {
+.icon:nth-of-type(1) {
   background-color: #cd8484;
 }
 
-i.material-icons:nth-of-type(1):hover {
-  color: #cd8484;
+.icon:nth-of-type(1):hover {
+  fill: #cd8484;
 }
 
-i.material-icons:nth-of-type(1):after {
+.icon:nth-of-type(1):after {
   border-color: #cd8484;
 }
 
-i.material-icons:nth-of-type(2) {
+.icon:nth-of-type(2) {
   background-color: #44bb66;
 }
 
-i.material-icons:nth-of-type(2):hover {
-  color: #44bb66;
+.icon:nth-of-type(2):hover {
+  fill: #44bb66;
 }
 
-i.material-icons:nth-of-type(2):after {
+.icon:nth-of-type(2):after {
   border-color: #44bb66;
 }
 
-i.material-icons:hover {
+.icon:hover {
   background-color: transparent;
   transform: rotate(10deg);
   cursor: pointer;
-}
-
-
-@media (min-width: 601px) {
-  i.material-icons {
-    padding:10px;
-    margin:5px;
-    font-size:2rem;
-  }
-}
-
-@media (min-width: 993px) {
-  i.material-icons {
-    padding:14px;
-    margin:7px;
-    font-size:3rem;
-  }
-  i.material-icons:after {
-    border-width:3px;
-    top:-3px;
-    left:-3px;
-  }
 }
 
 .bit-creation {
@@ -118,28 +106,29 @@ input[type="text"], textarea {
   padding: 10px;
   transition: all 0.3s ease-in-out;
   outline: none;
-  border: 1px solid #bbb;
-  border-radius: 7px;
+  border: 2px solid #bbb;
   margin-top: 10px;
 }
 
 input[type="text"]:focus, textarea:focus {
-  box-shadow: 0 0 5px #51cbee;
-  border: 1px solid #51cbee;
+  border: 2px solid #2ecc71;
 }
 
-label {
+label:not(#checkbox) {
   font-weight: bold;
-}
-
-.text, .key {
-  text-align: left;
-  margin-bottom: 15px;
+  float: left;
+  margin-bottom: 5px;
 }
 
 #text {
   resize: none;
   height: 20vh;
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+#key {
+  margin-bottom: 15px;
 }
 
 #permanent {
@@ -148,16 +137,17 @@ label {
 
 #checkbox {
 	font-size: 18px;
-	color: #555;
+	color: #bbb;
 	display: block;
 	cursor: pointer;
   margin-bottom: 15px;
+  user-select: none;
 }
 
 #checkbox:before {
 	content: '';
   display: inline-block;
-	background: #51cbee;
+	background: #2ecc71;
 	position: relative;
   top: 3px;
 	height: 20px;
@@ -181,25 +171,33 @@ input:checked + #checkbox {
 }
 
 #create, #back {
-  padding: 10px 25px;
-  background: transparent;
-  border: 1px #51cbee solid;
-  color: #51cbee;
-  text-decoration: none;
-  display: inline-block;
-  outline: none;
-}
-#create:hover, #back:hover {
-  padding: 10px 25px;
-  background: #51cbee;
-  border: 1px #51cbee solid;
+  background-color: transparent;
+  border: 3px solid #2ecc71;
   color: #fff;
+  cursor: pointer;
+  margin: 20px;
+  padding: 1.2em 2.8em;
+  text-align: center;
+  font-weight: 700;
+  margin: auto;
+  outline: none;
+  border-radius: 3em;
+  background-image: linear-gradient(315deg, transparent 50%, #2ecc71 50%);
+  background-position: 0% 0%;
+  background-size: 400%;
+  transition: background 200ms ease-in-out, color 200ms ease-in-out;
+}
+
+#create:hover, #back:hover {
+  color: #2ecc71;
+  background-position: 100% 0;
 }
 
 footer {
   width: 100%;
   position: absolute;
   bottom: 0;
+  left: 0;
 }
 
 a {
@@ -254,4 +252,14 @@ a:hover {
 
 #backLink {
   font-size: 20px;
+}
+
+@media only screen and (max-width: 680px)  {
+  #text, #key {
+    width: auto;
+  }
+
+  label:not(#checkbox) {
+    margin-left: 10px;
+  }
 }

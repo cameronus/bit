@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Spectral|Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Spectral" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/css/master.css">
-    <script src="/js/jquery.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/jquery.js" async></script>
+    <script src="/js/main.js" async></script>
     <title>bit</title>
   </head>
   <body>
@@ -18,22 +18,36 @@
         </header>
         <form>
           <div class="buttons">
-            <i class="material-icons" onclick="show(false)">lock_open</i>
-        		<i class="material-icons" onclick="show(true)">lock_outline</i>
+            <span class="icon" onclick="show(false)">
+              <svg height="24" width="24" viewbox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"/>
+              </svg>
+            </span>
+            <span class="icon" onclick="show(true)">
+              <svg height="24" width="24" viewbox="0 0 24 24">
+                  <defs>
+                      <path d="M0 0h24v24H0V0z" id="a"/>
+                  </defs>
+                  <clipPath id="b">
+                      <use overflow="visible" xlink:href="#a"/>
+                  </clipPath>
+                  <path clip-path="url(#b)" d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2H8.9V6zM18 20H6V10h12v10z"/>
+              </svg>
+            </span>
           </div>
           <div class="bit-creation">
             <input id="hidden" type="hidden" name="hidden" value="{{hidden}}">
-            <div class="text">
-              <label for="text">Bit content</label>
-              <textarea id="text" maxlength="10000"></textarea>
-            </div>
+            <label for="text">Bit content</label><br>
+            <textarea id="text" maxlength="10000" autocomplete="off"></textarea>
             <div class="key">
-              <label for="key">Encryption key</label>
-              <input id="key" type="text">
+              <label for="key">Encryption key</label><br>
+              <input id="key" type="text" autocomplete="off">
             </div>
             <input id="permanent" type="checkbox"><label id="checkbox" for="permanent">Permanent</label>
             <button id="back" type="button" onclick="goBack()">BACK</button>
             <button id="create" type="button" onclick="createBit()">CREATE</button>
+            <div id="bitError"></div>
           </div>
         </form>
       </div>

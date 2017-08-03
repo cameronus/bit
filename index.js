@@ -47,7 +47,7 @@ marked.setOptions({
 /* SETUP BODYPARSER & SESSION */
 app.use(bodyparser.urlencoded({ extended: false }))
 app.use(session({
-  genid: function(req) {
+  genid: (req) => {
     return shortid.generate()
   },
   secret: crypto.randomBytes(64).toString('hex'),
@@ -69,7 +69,7 @@ app.use('*', (req, res, next) => {
 })
 
 /* MAIN PAGE */
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   const sess = req.session
   const hidden = shortid.generate()
   sess.hidden = hidden
@@ -77,7 +77,7 @@ app.get('/', function(req, res) {
 })
 
 /* HANDLE BIT CREATION & ENCRYPTION */
-app.post('/', function(req, res) {
+app.post('/', (req, res) => {
   const sess = req.session
   const hidden = req.body.hidden
   let content = req.body.text.trim()
@@ -86,12 +86,6 @@ app.post('/', function(req, res) {
     return res.status(400).json({
       message: 'Please don\'t tamper with bit!',
       reload: true
-    })
-  }
-  if (req.body.encrypted == 'true' && req.body.key == '') {
-    return res.status(400).json({
-      message: 'Your key must have text.',
-      reload: false
     })
   }
   if (content == '') {
@@ -103,6 +97,12 @@ app.post('/', function(req, res) {
   if (content.length > 10000) {
     return res.status(400).json({
       message: 'Your bit is too long.',
+      reload: false
+    })
+  }
+  if (req.body.encrypted == 'true' && req.body.key == '') {
+    return res.status(400).json({
+      message: 'Your key must have text.',
       reload: false
     })
   }
@@ -144,7 +144,7 @@ app.post('/', function(req, res) {
 })
 
 /* HANDLE BIT VIEWING & DECRYPTION */
-app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
+app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', (req, res, next) => {
   const bitid = req.params.bit
   const cleanid = bitid.replace(/\/$/, '')
   Bit.find({ _id: cleanid }, (err, bits) => {
@@ -161,7 +161,7 @@ app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
 app.use(express.static('static'))
 
 /* HANDLE 404 ERRORS */
-app.get('*', function(req, res) {
+app.get('*', (req, res) => {
   const path = req.url
   const regex = new RegExp(/\/[a-zA-Z0-9-_]{7,14}\~?\/?$/)
   let error
