@@ -1,25 +1,40 @@
+/**
+ * bit - secure text transmission system
+ * @author Cameron Jones
+ */
+
 'use strict'
 
+/* REQUIRES */
 const express = require('express')
 const session = require('express-session')
 const bodyparser = require('body-parser')
-const mongoose = require('mongoose')
-const shortid = require('shortid')
-const crypto = require('crypto')
-const marked = require('marked')
+
 const triplesec = require('triplesec')
+const crypto = require('crypto')
+const shortid = require('shortid')
+
+const mongoose = require('mongoose')
+
+const marked = require('marked')
+const hbs = require('hbs')
 
 const Bit = require('./models/Bit')
 
+/* EXPRESS APP INITIALIZATION */
 const app = express()
 
+/* DECLARE PORT*/
 const port = 80
 
+/* MONGODB CONNECT & PROMISE WORKAROUND */
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost/bit')
 
+/* CHANGE SHORTID SEED */
 shortid.seed(1738)
 
+/* FIX MARKED HEADING RENDERER */
 const renderer = new marked.Renderer()
 renderer.heading = (text, level) => {
   return '<h' + level + '>' + text + '</h' + level + '>';
@@ -29,6 +44,7 @@ marked.setOptions({
   sanitize: true
 })
 
+/* SETUP BODYPARSER & SESSION */
 app.use(bodyparser.urlencoded({ extended: false }))
 app.use(session({
   genid: function(req) {
@@ -39,8 +55,11 @@ app.use(session({
   saveUninitialized: false
 }))
 
-app.set('view engine', 'ejs')
+/* SET VIEW ENGINE */
+app.set('view engine', 'html')
+app.engine('html', hbs.__express)
 
+/* REDIRECT INSECURE REQUESTS TO HTTPS */
 app.use('*', (req, res, next) => {
   if (req.secure || req.headers.host == 'localhost') {
     next()
@@ -49,6 +68,7 @@ app.use('*', (req, res, next) => {
   }
 })
 
+/* MAIN PAGE */
 app.get('/', function(req, res) {
   const sess = req.session
   const hidden = shortid.generate()
@@ -56,6 +76,7 @@ app.get('/', function(req, res) {
   res.render('pages/main', { hidden: hidden })
 })
 
+/* HANDLE BIT CREATION & ENCRYPTION */
 app.post('/', function(req, res) {
   const sess = req.session
   const hidden = req.body.hidden
@@ -67,6 +88,12 @@ app.post('/', function(req, res) {
       reload: true
     })
   }
+  if (req.body.encrypted == 'true' && req.body.key == '') {
+    return res.status(400).json({
+      message: 'Your key must have text.',
+      reload: false
+    })
+  }
   if (content == '') {
     return res.status(400).json({
       message: 'Your bit must have text.',
@@ -76,12 +103,6 @@ app.post('/', function(req, res) {
   if (content.length > 10000) {
     return res.status(400).json({
       message: 'Your bit is too long.',
-      reload: false
-    })
-  }
-  if (req.body.encrypted == 'true' && req.body.key == '') {
-    return res.status(400).json({
-      message: 'Your key must have text.',
       reload: false
     })
   }
@@ -110,7 +131,7 @@ app.post('/', function(req, res) {
       })
       bit.save((err, output) => {
         if (err) return console.error(err)
-        const url = req.protocol + '://' + req.hostname + '/' + bitid + '/'
+        const url = `${req.protocol}://${req.hostname}/${bitid}/`
         res.end(url)
       })
     } else {
@@ -122,6 +143,7 @@ app.post('/', function(req, res) {
   })
 })
 
+/* HANDLE BIT VIEWING & DECRYPTION */
 app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
   const bitid = req.params.bit
   const cleanid = bitid.replace(/\/$/, '')
@@ -133,19 +155,9 @@ app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', function(req, res, next) {
       bit.remove()
     }
   })
-  // db.get(cleanedId, function (err, value) {
-  //   if (err) {
-  //     next()
-  //   } else {
-  //     const decryptedValue = key.decrypt(value, 'utf8')
-  //     res.render('pages/bit', { bitId: cleanedId, bit: decryptedValue })
-  //     if (!bitId.includes('~')) {
-  //       db.del(cleanedId)
-  //     }
-  //   }
-  // })
 })
 
+/* HANDLE 404 ERRORS */
 app.get('*', function(req, res) {
   const path = req.url
   const regex = new RegExp(/\/[a-zA-Z0-9-_]{7,14}\~?\/?$/)
@@ -158,8 +170,10 @@ app.get('*', function(req, res) {
   res.status(404).render('pages/error', { error: error })
 })
 
+/* SERVER STATIC FILES */
 app.use(express.static('static'))
 
+/* LISTEN ON SPECIFIED PORT */
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
