@@ -71,11 +71,15 @@ function error(errorText, reload) {
 
 function show(showKey) {
   $('.title, .buttons').hide()
-  $('#text, #navigation').show()
-  if (showKey) $('#key').show()
+  $('.bit-creation, .key').show()
+  if (!showKey) $('.key').hide()
+  $('#text').focus()
 }
 
-function back() {
+function goBack() {
   $('.title, .buttons').show()
-  $('#text, #key, #navigation').hide()
+  $('.bit-creation').hide()
+  $('#text').val('')
+  $('#key').val('')
+  $('#permanent').prop('checked', false)
 }

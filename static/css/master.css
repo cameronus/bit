@@ -107,14 +107,108 @@ i.material-icons:hover {
   }
 }
 
-#text, #key, #navigation {
+.bit-creation {
   display: none;
+  text-align: center;
+}
+
+input[type="text"], textarea {
+  display: block;
+  width: 25vw;
+  padding: 10px;
+  transition: all 0.3s ease-in-out;
+  outline: none;
+  border: 1px solid #bbb;
+  border-radius: 7px;
+  margin-top: 10px;
+}
+
+input[type="text"]:focus, textarea:focus {
+  box-shadow: 0 0 5px #51cbee;
+  border: 1px solid #51cbee;
+}
+
+label {
+  font-weight: bold;
+}
+
+.text, .key {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+#text {
+  resize: none;
+  height: 20vh;
+}
+
+#permanent {
+  display: none;
+}
+
+#checkbox {
+	font-size: 18px;
+	color: #555;
+	display: block;
+	cursor: pointer;
+  margin-bottom: 15px;
+}
+
+#checkbox:before {
+	content: '';
+  display: inline-block;
+	background: #51cbee;
+	position: relative;
+  top: 3px;
+	height: 20px;
+	width: 20px;
+	margin-right: 10px;
+	border-radius: 80%;
+	box-sizing: border-box;
+	border: 10px solid #eee;
+	transition: border .3s ease;
+}
+
+input:checked + #checkbox:before {
+	border-color: #eee;
+	border-width: 3px;
+}
+input + #checkbox {
+	transition: color .7s ease;
+}
+input:checked + #checkbox {
+	color: #000;
+}
+
+#create, #back {
+  padding: 10px 25px;
+  background: transparent;
+  border: 1px #51cbee solid;
+  color: #51cbee;
+  text-decoration: none;
+  display: inline-block;
+  outline: none;
+}
+#create:hover, #back:hover {
+  padding: 10px 25px;
+  background: #51cbee;
+  border: 1px #51cbee solid;
+  color: #fff;
 }
 
 footer {
   width: 100%;
   position: absolute;
   bottom: 0;
+}
+
+footer a {
+  text-decoration: none;
+  color: #51cbee;
+}
+
+footer a:hover {
+  color: #0088ff;
 }
 
 #right {

@@ -6,9 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Spectral|Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/css/master.css">
-    <link rel="stylesheet" type="text/css" href="/css/sweetalert2.css">
     <script src="/js/jquery.js"></script>
-    <script src="/js/sweetalert2.js"></script>
     <script src="/js/main.js"></script>
     <title>bit</title>
   </head>
@@ -23,12 +21,19 @@
             <i class="material-icons" onclick="show(false)">lock_open</i>
         		<i class="material-icons" onclick="show(true)">lock_outline</i>
           </div>
-          <textarea id="text" maxlength="10000" placeholder="" autofocus></textarea>
-          <input id="key" type="text" placeholder="Encryption key"><br>
-          <input id="hidden" type="hidden" name="hidden" value="{{hidden}}">
-          <div id="navigation">
-            <button id="create" type="button" onclick="create()">Create</button>
-            <button id="back" type="button" onclick="back()">Back</button>
+          <div class="bit-creation">
+            <input id="hidden" type="hidden" name="hidden" value="{{hidden}}">
+            <div class="text">
+              <label for="text">Bit content</label>
+              <textarea id="text" maxlength="10000"></textarea>
+            </div>
+            <div class="key">
+              <label for="key">Encryption key</label>
+              <input id="key" type="text">
+            </div>
+            <input id="permanent" type="checkbox"><label id="checkbox" for="permanent">Permanent</label>
+            <button id="create" type="button" onclick="create()">CREATE</button>
+            <button id="back" type="button" onclick="goBack()">BACK</button>
           </div>
         </form>
       </div>
