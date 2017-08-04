@@ -10,13 +10,11 @@ const express = require('express')
 const session = require('express-session')
 const bodyparser = require('body-parser')
 
-const triplesec = require('triplesec')
 const crypto = require('crypto')
 const shortid = require('shortid')
 
 const mongoose = require('mongoose')
 
-const marked = require('marked')
 const hbs = require('hbs')
 
 const Bit = require('./models/Bit')
@@ -33,16 +31,6 @@ mongoose.connect('mongodb://localhost/bit')
 
 /* CHANGE SHORTID SEED */
 shortid.seed(1738)
-
-/* FIX MARKED HEADING RENDERER */
-const renderer = new marked.Renderer()
-renderer.heading = (text, level) => {
-  return '<h' + level + '>' + text + '</h' + level + '>';
-}
-marked.setOptions({
-  renderer: renderer,
-  sanitize: true
-})
 
 /* SETUP BODYPARSER & SESSION */
 app.use(bodyparser.urlencoded({ extended: false }))
@@ -82,10 +70,11 @@ app.post('/', (req, res) => {
   const hidden = req.body.hidden
   const hiddenSession = sess.hidden
 
-  const content = req.body.text
+  const content = req.body.text.trim()
   let hashedKey = req.body.hashedKey
   const encrypted = req.body.encrypted == 'true'
   const permanent = req.body.permanent == 'true'
+
   if (hidden != hiddenSession) return res.status(400).end('Please reload the page to continue.')
   if (content.length/2 == 208) return res.status(400).end('Your bit must be at least one character.')
   if (encrypted == 'true' && hashedKey == '') return res.status(400).end('You must have an encryption key.')

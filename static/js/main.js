@@ -13,6 +13,7 @@ function show(showKey) {
 function goBack() {
   $('.title, .buttons').show()
   $('.bit-creation').hide()
+  $('.bit-success').hide()
   $('#text').val('')
   $('#key').val('')
   $('#permanent').prop('checked', false)
@@ -22,7 +23,7 @@ function goBack() {
 function createBit() {
   $('#bitError').html('')
 
-  const rawtext = $('#text').val()
+  const rawtext = $('#text').val().trim()
   const key = $('#key').val()
 
   if (rawtext.length == 0) return error('Your bit must be at least one character.')
@@ -60,14 +61,6 @@ function sendBit(text, hashedKey) {
   $('#bitLoader').hide()
   $('#overlay').hide()
 
-  console.dir({
-    text: text,
-    hashedKey: hashedKey,
-    encrypted: window.bitEncrypted,
-    permanent: $('#permanent').is(':checked'),
-    hidden: $('#hidden').val()
-  })
-
   $.ajax({
     type: 'POST',
     url: '/',
@@ -79,26 +72,17 @@ function sendBit(text, hashedKey) {
       hidden: $('#hidden').val()
     }
   }).done((response) => {
-    // swal({
-    //   title: 'Bit created!',
-    //   html: '<div id="swalExtraInfo">'
-    //   +        'Click on the link below to copy to clipboard: <br>'
-    //   +       '</div>'
-    //   +       '<b><textarea id="selectLink" type="text" onclick="this.focus();this.select();document.execCommand(\'copy\')" readonly="readonly">'
-    //   +         response
-    //   +       '</textarea></b><br/>'
-    //   +       '<div id="qrDiv">'
-    //   +         '<img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' + response + '" onclick="window.print()" />'
-    //   +       '</div>',
-    //   type: 'success'
-    // })
     $('#text').val('')
     $('#key').val('')
     $('#permanent').prop('checked', false)
     $('#bitLoader').hide()
     $('#overlay').hide()
-    console.log(response)
-    alert(response)
+    $('.bit-creation').hide()
+    $('#bitLink').val(response)
+    $('#bitQr').attr('src', 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + response)
+    $('#qrLink').show()
+    $('#bitQr').hide()
+    $('.bit-success').show()
   }).fail((data) => {
     if (data.status == 500) return error('Internal server error, try again later.')
     error(data.responseText)
@@ -109,4 +93,9 @@ function error(message) {
   $('#bitLoader').hide()
   $('#overlay').hide()
   $('#bitError').html('<p>' + message + '</p>')
+}
+
+function viewQr() {
+  $('#qrLink').hide()
+  $('#bitQr').show()
 }

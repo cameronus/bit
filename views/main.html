@@ -60,6 +60,13 @@
             <button id="back" type="button" onclick="goBack()">BACK</button>
             <button id="create" type="button" onclick="createBit()">CREATE</button>
           </div>
+          <div class="bit-success">
+            <h2>Your new bit has been created.</h2>
+            <input id="bitLink" type="text" onclick="this.focus(); this.select(); document.execCommand('copy')" readonly>
+            <img id="bitQr">
+            <a id="qrLink" onclick="viewQr()">View QR Code</a><br>
+            <button id="back" type="button" onclick="goBack()">BACK</button>
+          </div>
         </form>
       </div>
       <footer>
