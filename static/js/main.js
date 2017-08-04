@@ -1,74 +1,3 @@
-/*$(document).ready(() => {
-  const wrapper = $('.bitWrapper').height()
-  const viewport = $(window).height()
-  if (wrapper > viewport) {
-    $('#footer').addClass('kill')
-  }
-})
-
-function createEncryptedBit() {
-  swal({
-    title: 'Enter key to encrypt bit',
-    input: 'text',
-    confirmButtonText: 'Encrypt',
-  }).then((key) => {
-    createBit(key)
-  })
-}
-
-function createBit(key) {
-  $.ajax({
-    type: 'POST',
-    url: '/',
-    data: {
-      text: $('#text').val(),
-      key: key,
-      encrypted: key !== undefined,
-      permanent: $('#permanent').is(':checked'),
-      hidden: $('#hidden').val()
-    }
-  }).done((response) => {
-    swal({
-      title: 'Bit created!',
-      html: '<div id="swalExtraInfo">'
-      +        'Click on the link below to copy to clipboard: <br>'
-      +       '</div>'
-      +       '<b><textarea id="selectLink" type="text" onclick="this.focus();this.select();document.execCommand(\'copy\')" readonly="readonly">'
-      +         response
-      +       '</textarea></b><br/>'
-      +       '<div id="qrDiv">'
-      +         '<img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' + response + '" onclick="window.print()" />'
-      +       '</div>',
-      type: 'success'
-    })
-    $('#text').val('')
-    $('#permanent').prop('checked', false)
-    console.log('done');
-  }).fail(function(data) {
-    error(data.responseJSON.message, data.responseJSON.reload)
-  })
-}
-
-function error(errorText, reload) {
-  if (reload) {
-    swal({title: 'Error!',
-          text: errorText,
-          type: 'error',
-          closeOnConfirm: false,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          confirmButtonText: 'Reload',
-          timer: 4000})
-    .then(function() {
-      location.reload()
-    })
-  } else {
-    swal({title: 'Error!',
-          text: errorText,
-          type: 'error' })
-  }
-}*/
-
 'use strict'
 
 function show(showKey) {
@@ -98,6 +27,7 @@ function createBit() {
 
   if (rawtext.length == 0) return error('Your bit must be at least one character.')
   if (window.bitEncrypted && key.length == 0) return error('Your encryption key must be at least one character.')
+  if (window.bitEncrypted && key.length > 16) return error('Your encryption key must be less than or equal to 72 characters.')
 
   const md = window.markdownit()
   const processed = md.render(rawtext)
@@ -109,17 +39,18 @@ function createBit() {
     $('#overlay').show()
 
     const bcrypt = dcodeIO.bcrypt
-    hashedKey = bcrypt.hashSync(key, 10)
-    triplesec.encrypt({
-      data: new triplesec.Buffer(processed),
-      key: new triplesec.Buffer(key),
-      progress_hook: (obj) => {}
-    }, (err, buff) => {
-      if (err) return error('Encryption error, please try again later.')
-      sendBit(buff.toString('hex'))
+    bcrypt.hash(key, 10, (err, hashedKey) => {
+      triplesec.encrypt({
+        data: new triplesec.Buffer(processed),
+        key: new triplesec.Buffer(key),
+        progress_hook: (obj) => {}
+      }, (err, buff) => {
+        if (err) return error('Encryption error, please try again later.')
+        sendBit(buff.toString('hex'), hashedKey)
+      })
     })
   } else {
-    sendBit(processed)
+    sendBit(processed, '')
   }
 }
 
@@ -128,7 +59,8 @@ function sendBit(text, hashedKey) {
 
   $('#bitLoader').hide()
   $('#overlay').hide()
-  return console.dir({
+
+  console.dir({
     text: text,
     hashedKey: hashedKey,
     encrypted: window.bitEncrypted,
@@ -168,7 +100,8 @@ function sendBit(text, hashedKey) {
     console.log(response)
     alert(response)
   }).fail((data) => {
-    error(data)
+    if (data.status == 500) return error('Internal server error, try again later.')
+    error(data.responseText)
   })
 }
 

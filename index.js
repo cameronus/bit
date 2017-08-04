@@ -80,66 +80,31 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
   const sess = req.session
   const hidden = req.body.hidden
-  let content = req.body.text.trim()
   const hiddenSession = sess.hidden
-  if (hidden != hiddenSession) {
-    return res.status(400).json({
-      message: 'Please don\'t tamper with bit!',
-      reload: true
-    })
-  }
-  if (content == '') {
-    return res.status(400).json({
-      message: 'Your bit must have text.',
-      reload: false
-    })
-  }
-  if (content.length > 10000) {
-    return res.status(400).json({
-      message: 'Your bit is too long.',
-      reload: false
-    })
-  }
-  if (req.body.encrypted == 'true' && req.body.key == '') {
-    return res.status(400).json({
-      message: 'Your key must have text.',
-      reload: false
-    })
-  }
-  res.status(200)
+
+  const content = req.body.text
+  let hashedKey = req.body.hashedKey
+  const encrypted = req.body.encrypted == 'true'
+  const permanent = req.body.permanent == 'true'
+  if (hidden != hiddenSession) return res.status(400).end('Please reload the page to continue.')
+  if (content.length/2 == 208) return res.status(400).end('Your bit must be at least one character.')
+  if (encrypted == 'true' && hashedKey == '') return res.status(400).end('You must have an encryption key.')
+  if (content.length > 10000) return res.status(400).end('Your bit is too long.')
+  if (!encrypted) hashedKey = undefined
+
   let bitid = shortid.generate()
-  if (req.body.permanent == 'true') bitid += '~'
-  let key
-  content = marked(content)
-  if (req.body.encrypted == 'true') {
-    key = req.body.key
-  } else {
-    key = 'CONSTANTKEY'
-  }
-  triplesec.encrypt({
-    data: new triplesec.Buffer(content),
-    key: new triplesec.Buffer(key),
-    progress_hook: (obj) => {}
-  }, (err, buff) => {
-    if (!err) {
-      const processed = buff.toString('hex')
-      const bit = new Bit({
-        _id: bitid,
-        text: processed,
-        encrypted: req.body.encrypted == 'true',
-        permanent: req.body.permanent == 'true'
-      })
-      bit.save((err, output) => {
-        if (err) return console.error(err)
-        const url = `${req.protocol}://${req.hostname}/${bitid}/`
-        res.end(url)
-      })
-    } else {
-      return res.status(400).json({
-        message: 'Encryption failed, please try again later.',
-        reload: false
-      })
-    }
+  if (permanent) bitid += '~'
+
+  const bit = new Bit({
+    _id: bitid,
+    text: content,
+    hashedKey: hashedKey,
+    permanent: permanent
+  })
+  bit.save((err, output) => {
+    if (err) return res.status(400).end('Error saving bit, try again later.')
+    const url = `${req.protocol}://${req.hostname}/${bitid}/`
+    res.status(200).end(url)
   })
 })
 
