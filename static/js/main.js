@@ -87,15 +87,61 @@ function goBack() {
   $('#text').val('')
   $('#key').val('')
   $('#permanent').prop('checked', false)
+  $('#bitError').html('')
 }
 
 function createBit() {
+  $('#bitError').html('')
+
+  const rawtext = $('#text').val()
+  const key = $('#key').val()
+
+  if (rawtext.length == 0) return error('Your bit must be at least one character.')
+  if (window.bitEncrypted && key.length == 0) return error('Your encryption key must be at least one character.')
+
+  const md = window.markdownit()
+  const processed = md.render(rawtext)
+
+  let hashedKey = key
+
+  if (window.bitEncrypted) {
+    $('#bitLoader').show()
+    $('#overlay').show()
+
+    const bcrypt = dcodeIO.bcrypt
+    hashedKey = bcrypt.hashSync(key, 10)
+    triplesec.encrypt({
+      data: new triplesec.Buffer(processed),
+      key: new triplesec.Buffer(key),
+      progress_hook: (obj) => {}
+    }, (err, buff) => {
+      if (err) return error('Encryption error, please try again later.')
+      sendBit(buff.toString('hex'))
+    })
+  } else {
+    sendBit(processed)
+  }
+}
+
+function sendBit(text, hashedKey) {
+  if (text.length > 10000) return error('Your bit is too long.')
+
+  $('#bitLoader').hide()
+  $('#overlay').hide()
+  return console.dir({
+    text: text,
+    hashedKey: hashedKey,
+    encrypted: window.bitEncrypted,
+    permanent: $('#permanent').is(':checked'),
+    hidden: $('#hidden').val()
+  })
+
   $.ajax({
     type: 'POST',
     url: '/',
     data: {
-      text: $('#text').val(),
-      key: $('#key').val(),
+      text: text,
+      hashedKey: hashedKey,
       encrypted: window.bitEncrypted,
       permanent: $('#permanent').is(':checked'),
       hidden: $('#hidden').val()
@@ -114,13 +160,20 @@ function createBit() {
     //   +       '</div>',
     //   type: 'success'
     // })
-    console.log(response)
-    alert(response)
     $('#text').val('')
     $('#key').val('')
     $('#permanent').prop('checked', false)
-    console.log('done');
+    $('#bitLoader').hide()
+    $('#overlay').hide()
+    console.log(response)
+    alert(response)
   }).fail((data) => {
-    alert('error! ' + data.responseJSON.message)
+    error(data)
   })
+}
+
+function error(message) {
+  $('#bitLoader').hide()
+  $('#overlay').hide()
+  $('#bitError').html('<p>' + message + '</p>')
 }

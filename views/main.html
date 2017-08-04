@@ -8,6 +8,9 @@
     <link rel="stylesheet" type="text/css" href="/css/master.css">
     <script src="/js/jquery.js" async></script>
     <script src="/js/main.js" async></script>
+    <script src="/js/triplesec.js" async></script>
+    <script src="/js/bcrypt.js" async></script>
+    <script src="/js/markdown-it.js" async></script>
     <title>bit</title>
   </head>
   <body>
@@ -37,6 +40,15 @@
             </span>
           </div>
           <div class="bit-creation">
+            <div id="bitError"></div>
+            <div id="bitLoader">
+              <div id="bitLoaderContainer">
+                <div id="bitLoaderTop"></div>
+                <div id="bitLoaderBottom"></div>
+              </div>
+              <div id="bitLoaderSquare"></div>
+            </div>
+            <div id="overlay"></div>
             <input id="hidden" type="hidden" name="hidden" value="{{hidden}}">
             <label for="text">Bit content</label><br>
             <textarea id="text" maxlength="10000" autocomplete="off"></textarea>
@@ -44,10 +56,9 @@
               <label for="key">Encryption key</label><br>
               <input id="key" type="text" autocomplete="off">
             </div>
-            <input id="permanent" type="checkbox"><label id="checkbox" for="permanent">Permanent</label>
+            <input id="permanent" type="checkbox"><label id="checkbox" for="permanent">Permanent</label><br>
             <button id="back" type="button" onclick="goBack()">BACK</button>
             <button id="create" type="button" onclick="createBit()">CREATE</button>
-            <div id="bitError"></div>
           </div>
         </form>
       </div>
