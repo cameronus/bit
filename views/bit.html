@@ -14,8 +14,8 @@
     </script>
     <script src="/js/jquery.js"></script>
     <script src="/js/bit.js"></script>
-    <script src="/js/triplesec.js" async></script>
-    <script src="/js/bcrypt.js" async></script>
+    <script src="/js/triplesec.js"></script>
+    <script src="/js/bcrypt.js"></script>
     <title>bit</title>
   </head>
   <body>
@@ -23,6 +23,14 @@
       <div class="content">
         <div id="viewBit">
             <div id="bitError"></div>
+            <div id="bitLoader">
+              <div id="bitLoaderContainer">
+                <div id="bitLoaderTop"></div>
+                <div id="bitLoaderBottom"></div>
+              </div>
+              <div id="bitLoaderSquare"></div>
+            </div>
+            <div id="overlay"></div>
             <h1 id="bitTitle">bitcode: {{bitid}}</h1>
             <h2 id="bitWarning">Are you sure you want to view this bit?</h2>
             <input id="bitKey" type="text" placeholder="Enter your decryption key">

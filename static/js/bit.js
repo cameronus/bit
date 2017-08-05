@@ -1,9 +1,11 @@
+$(document).ready(() => {
+  if (window.bitEncrypted) {
+    $('#bitKey').show()
+    $('#create').html('DECRYPT')
+    $('#bitWarning').html('Please enter your key to decrypt the bit.')
+  }
+})
 if (window.bitPermanent && !window.bitEncrypted) viewBit('')
-if (window.bitEncrypted) {
-  $('#create').html('DECRYPT')
-  $('#bitWarning').html('Please enter your key to decrypt the bit.')
-  $('#bitKey').show()
-}
 
 function prepareBit() {
   let key = $('#bitKey').val()
@@ -29,6 +31,8 @@ function viewBit(key, hashedKey) {
   }).done((response) => {
     $('#bitError').html()
     if (window.bitEncrypted) {
+      $('#bitLoader').show()
+      $('#overlay').show()
       triplesec.decrypt ({
         data: new triplesec.Buffer(response, 'hex'),
         key: new triplesec.Buffer(key),
@@ -36,6 +40,8 @@ function viewBit(key, hashedKey) {
       }, (err, buff) => {
         if (err) return error('Decryption error, malformed data.')
         $('#bit').html(buff.toString())
+        $('#bitLoader').hide()
+        $('#overlay').hide()
         $('#viewBit').hide()
         $('#bitContent').show()
       })
@@ -51,5 +57,7 @@ function viewBit(key, hashedKey) {
 }
 
 function error(message) {
+  $('#bitLoader').hide()
+  $('#overlay').hide()
   $('#bitError').html('<p>' + message + '</p>')
 }
