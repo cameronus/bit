@@ -9,6 +9,8 @@
 const express = require('express')
 const session = require('express-session')
 const bodyparser = require('body-parser')
+const greenlockexpress = require('greenlock-express')
+const https = require('https')
 
 const crypto = require('crypto')
 const bcrypt = require('bcryptjs')
@@ -17,6 +19,8 @@ const shortid = require('shortid')
 const mongoose = require('mongoose')
 
 const hbs = require('hbs')
+
+const config = require('./config.json')
 
 const Bit = require('./models/Bit')
 
@@ -171,9 +175,8 @@ app.get('*', (req, res) => {
 })
 
 /* SETUP GREENLOCK & PREVENT SNI SPOOFING */
-const lex = require('greenlock-express').create({
-  // set to https://acme-v01.api.letsencrypt.org/directory in production
-  server: 'staging',
+const lex = greenlockexpress.create({
+  server: config.dev ? 'staging' : 'https://acme-v01.api.letsencrypt.org/directory',
   challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '/tmp/acme-challenges' }) },
   store: require('le-store-certbot').create({ webrootPath: '/tmp/acme-challenges' }),
   approveDomains: (opts, certs, cb) => {
@@ -181,7 +184,7 @@ const lex = require('greenlock-express').create({
       opts.domains = certs.altnames
     }
     else {
-      opts.email = 'john.doe@example.com'
+      opts.email = config.email
       opts.agreeTos = true
     }
     cb(null, { options: opts, certs: certs })
@@ -194,6 +197,6 @@ app.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
 
-require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, () => {
+https.createServer(lex.httpsOptions, lex.middleware(app)).listen(443, () => {
   console.log('Listening on port 443')
 })
