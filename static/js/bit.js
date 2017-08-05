@@ -13,29 +13,39 @@ function prepareBit() {
     if (key == '') return error('Please enter your decryption key.')
     const bcrypt = dcodeIO.bcrypt
     bcrypt.hash(key, window.bitSalt, (err, hash) => {
-      if (err) error('Hashing error, invalid decryption key.')
-      viewBit(hash)
+      if (err) return error('Hashing error, invalid decryption key.')
+      viewBit(key, hash)
     })
   } else {
-    viewBit('')
+    viewBit('', '')
   }
 }
 
-function viewBit(key) {
+function viewBit(key, hashedKey) {
   $.ajax({
     type: 'POST',
     url: '/' + window.bitid,
     data: {
-      hashedKey: key
+      hashedKey: hashedKey
     }
   }).done((response) => {
     $('#bitError').html()
     if (window.bitEncrypted) {
-      //decrypt
+      triplesec.decrypt ({
+        data: new triplesec.Buffer(response, 'hex'),
+        key: new triplesec.Buffer(key),
+        progress_hook: (obj) => {}
+      }, (err, buff) => {
+        if (err) return error('Decryption error, malformed data.')
+        $('#bit').html(buff.toString())
+        $('#viewBit').hide()
+        $('#bitContent').show()
+      })
+    } else {
+      $('#bit').html(response)
+      $('#viewBit').hide()
+      $('#bitContent').show()
     }
-    $('#bit').html(response)
-    $('#viewBit').hide()
-    $('#bitContent').show()
   }).fail((data) => {
     if (data.status == 500) return error('Internal server error, try again later.')
     error(data.responseText)

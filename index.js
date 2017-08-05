@@ -11,6 +11,7 @@ const session = require('express-session')
 const bodyparser = require('body-parser')
 
 const crypto = require('crypto')
+const bcrypt = require('bcryptjs')
 const shortid = require('shortid')
 
 const mongoose = require('mongoose')
@@ -133,9 +134,6 @@ app.post('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', (req, res, next) => {
       if (!permanent) bit.remove()
       return
     }
-
-    console.log(hashedKey);
-    console.log(bit.hashedKey);
 
     const match = hashedKey == bit.hashedKey
     if (!match && permanent) return res.status(400).end('You have entered the wrong decryption key.')
