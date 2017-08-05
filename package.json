@@ -1,26 +1,29 @@
 {
   "name": "bit",
-  "version": "1.4.0",
-  "description": "Bit provides a way to share text that disappears after being read.",
+  "version": "2.0.0",
+  "description": "A secure, end-to-end encrypted text snippet transmission system.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thecameronjones/bit.git"
+    "url": "git+https://github.com/cameronus/bit.git"
   },
   "keywords": [
-    "bit",
+    "communication",
     "text",
-    "sharing"
+    "nodejs",
+    "secure",
+    "encryption",
+    "e2ee"
   ],
   "author": "Cameron Jones",
   "license": "Attribution-NonCommercial-NoDerivs 3.0 Unported",
   "bugs": {
-    "url": "https://github.com/thecameronjones/bit/issues"
+    "url": "https://github.com/cameronus/bit/issues"
   },
-  "homepage": "https://github.com/thecameronjones/bit#readme",
+  "homepage": "https://github.com/cameronus/bit#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
