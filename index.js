@@ -117,7 +117,7 @@ app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', (req, res, next) => {
   })
 })
 
-/* HANDLE BIT DECRYPTION AND VIEWING */
+/* HANDLE BIT DECRYPTION & VIEWING */
 app.post('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', (req, res, next) => {
   const bitid = req.params.bit
   const cleanid = bitid.replace(/\/$/, '')
@@ -170,7 +170,30 @@ app.get('*', (req, res) => {
   res.status(404).render('error', { error: error })
 })
 
+/* SETUP GREENLOCK & PREVENT SNI SPOOFING */
+const lex = require('greenlock-express').create({
+  // set to https://acme-v01.api.letsencrypt.org/directory in production
+  server: 'staging',
+  challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '/tmp/acme-challenges' }) },
+  store: require('le-store-certbot').create({ webrootPath: '/tmp/acme-challenges' }),
+  approveDomains: (opts, certs, cb) => {
+    if (certs) {
+      opts.domains = certs.altnames
+    }
+    else {
+      opts.email = 'john.doe@example.com'
+      opts.agreeTos = true
+    }
+    cb(null, { options: opts, certs: certs })
+  }
+})
+
+
 /* LISTEN ON SPECIFIED PORT */
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
+})
+
+require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, () => {
+  console.log('Listening on port 443')
 })
