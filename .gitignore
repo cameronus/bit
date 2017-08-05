@@ -35,3 +35,7 @@ jspm_packages
 
 # Sensitive config file
 config.json
+
+# SSL Private Key & Certificate
+privatekey.pem
+certificate.pem

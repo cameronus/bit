@@ -9,20 +9,20 @@
 const express = require('express')
 const session = require('express-session')
 const bodyparser = require('body-parser')
-const greenlockexpress = require('greenlock-express')
-const https = require('https')
-
 const crypto = require('crypto')
 const bcrypt = require('bcryptjs')
 const shortid = require('shortid')
-
 const mongoose = require('mongoose')
-
+const https = require('https')
 const hbs = require('hbs')
+const fs = require('fs')
+
+const Bit = require('./models/Bit')
 
 const config = require('./config.json')
 
-const Bit = require('./models/Bit')
+const privatekey = fs.readFileSync('privatekey.pem')
+const certificate = fs.readFileSync('certificate.pem')
 
 /* EXPRESS APP INITIALIZATION */
 const app = express()
@@ -174,29 +174,14 @@ app.get('*', (req, res) => {
   res.status(404).render('error', { error: error })
 })
 
-/* SETUP GREENLOCK & PREVENT SNI SPOOFING */
-const lex = greenlockexpress.create({
-  server: config.dev ? 'staging' : 'https://acme-v01.api.letsencrypt.org/directory',
-  challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '/tmp/acme-challenges' }) },
-  store: require('le-store-certbot').create({ webrootPath: '/tmp/acme-challenges' }),
-  approveDomains: (opts, certs, cb) => {
-    if (certs) {
-      opts.domains = certs.altnames
-    }
-    else {
-      opts.email = config.email
-      opts.agreeTos = true
-    }
-    cb(null, { options: opts, certs: certs })
-  }
-})
-
-
 /* LISTEN ON SPECIFIED PORT */
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
 
-https.createServer(lex.httpsOptions, lex.middleware(app)).listen(443, () => {
+https.createServer({
+  key: privatekey,
+  cert: certificate
+}, app).listen(443, () => {
   console.log('Listening on port 443')
 })
