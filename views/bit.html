@@ -2,21 +2,37 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Spectral" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/css/master.css">
+    <script>
+      window.bitEncrypted = {{{encrypted}}}
+      window.bitid = '{{{bitid}}}'
+    </script>
     <script src="/js/jquery.js"></script>
     <script src="/js/bit.js"></script>
     <script src="/js/triplesec.js" async></script>
+    <script src="/js/bcrypt.js" async></script>
     <title>bit</title>
   </head>
   <body>
     <main class="container">
-      <div id="bitContent">
-        <h1 id="bitTitle">bitcode: {{bitid}}</h1>
-        <div id="bit">{{{bit}}}</div>
-        <button id="back" type="button" onclick="location.href='/'">BACK</button>
+      <div class="bitContent">
+        <div id="viewBit">
+            <h1 id="bitTitle">bitcode: {{bitid}}</h1>
+            <h2>Are you sure you want to view this bit?</h2>
+            <input id="bitKey" type="text" placeholder="Enter your decryption key">
+            <div class="buttons">
+              <button id="back" type="button" onclick="location.href='/'">BACK</button>
+              <button id="create" type="button" onclick="viewBit()">VIEW</button>
+            </div>
+        </div>
+        <!-- <div id="bitContent">
+          <h1 id="bitTitle">bitcode: {{bitid}}</h1>
+          <div id="bit"></div>
+          <button id="back" type="button" onclick="location.href='/'">BACK</button>
+        </div> -->
       </div>
       <footer>
         <p id="right">

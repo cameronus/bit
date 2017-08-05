@@ -21,8 +21,6 @@ function goBack() {
 }
 
 function createBit() {
-  $('#bitError').html('')
-
   const rawtext = $('#text').val().trim()
   const key = $('#key').val()
 
@@ -32,8 +30,6 @@ function createBit() {
 
   const md = window.markdownit()
   const processed = md.render(rawtext)
-
-  let hashedKey = key
 
   if (window.bitEncrypted) {
     $('#bitLoader').show()

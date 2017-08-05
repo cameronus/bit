@@ -70,6 +70,8 @@ app.post('/', (req, res) => {
   const hidden = req.body.hidden
   const hiddenSession = sess.hidden
 
+  let triesLeft = 3
+
   const content = req.body.text.trim()
   let hashedKey = req.body.hashedKey
   const encrypted = req.body.encrypted == 'true'
@@ -79,7 +81,10 @@ app.post('/', (req, res) => {
   if (content.length/2 == 208) return res.status(400).end('Your bit must be at least one character.')
   if (encrypted == 'true' && hashedKey == '') return res.status(400).end('You must have an encryption key.')
   if (content.length > 10000) return res.status(400).end('Your bit is too long.')
-  if (!encrypted) hashedKey = undefined
+  if (!encrypted) {
+    hashedKey = undefined
+    triesLeft = undefined
+  }
 
   let bitid = shortid.generate()
   if (permanent) bitid += '~'
@@ -87,27 +92,62 @@ app.post('/', (req, res) => {
   const bit = new Bit({
     _id: bitid,
     text: content,
+    encrypted: encrypted,
     hashedKey: hashedKey,
+    triesLeft: triesLeft,
     permanent: permanent
   })
   bit.save((err, output) => {
     if (err) return res.status(400).end('Error saving bit, try again later.')
-    const url = `${req.protocol}://${req.hostname}/${bitid}/`
-    res.status(200).end(url)
+    res.status(200).end(`${req.protocol}://${req.hostname}/${bitid}/`)
   })
 })
 
-/* HANDLE BIT VIEWING & DECRYPTION */
+/* HANDLE BIT CONFIRMATION */
 app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', (req, res, next) => {
   const bitid = req.params.bit
   const cleanid = bitid.replace(/\/$/, '')
   Bit.find({ _id: cleanid }, (err, bits) => {
     if (err || bits.length != 1) return next()
     const bit = bits[0]
+    res.render('bit', { bitid: cleanid, encrypted: bit.encrypted })
+  })
+  /*Bit.find({ _id: cleanid }, (err, bits) => {
+
+    const bit = bits[0]
     res.render('bit', { bitid: cleanid, bit: bit.text })
     if (!bit.permanent) {
       bit.remove()
     }
+  })*/
+})
+
+/* HANDLE BIT DECRYPTION AND VIEWING */
+app.post('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', (req, res, next) => {
+  const bitid = req.params.bit
+  const cleanid = bitid.replace(/\/$/, '')
+  Bit.find({ _id: cleanid }, (err, bits) => {
+    if (err || bits.length != 1) return res.status(400).end('The bit you have tried to access has already disappeared.')
+
+    const bit = bits[0]
+    const encrypted = bit.encrypted
+    const permanent = bit.permanent
+    const hashedKey = req.body.hashedKey
+
+    if (encrypted && hashedKey == '') return res.status(400).end('Please enter your decryption key.')
+    if (encrypted && permanent && hashedKey != bit.hashedKey) return res.status(400).end('You have entered the wrong decryption key.')
+    if (encrypted && !permanent && hashedKey != bit.hashedKey) {
+      bit.triesLeft -= 1
+      bit.save((err) => {
+        if (bit.triesLeft == 0) {
+          res.status(400).end('This bit has disappeared after 3 incorrect attempts to decrypt it.')
+          return bit.remove()
+        }
+        return res.status(400).end(`You have entered the wrong decryption key. You have ${bit.triesLeft} tries left.`)
+      })
+    }
+    res.status(200).end(bit.text)
+    if (!permanent) bit.remove()
   })
 })
 
