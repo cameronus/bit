@@ -1,11 +1,9 @@
-$(document).ready(() => {
-  if (window.bitPermanent && !window.bitEncrypted) viewBit('')
-  if (window.bitEncrypted) {
-    $('#create').html('DECRYPT')
-    $('#bitWarning').html('Please enter your key to decrypt the bit.')
-    $('#bitKey').show()
-  }
-})
+if (window.bitPermanent && !window.bitEncrypted) viewBit('')
+if (window.bitEncrypted) {
+  $('#create').html('DECRYPT')
+  $('#bitWarning').html('Please enter your key to decrypt the bit.')
+  $('#bitKey').show()
+}
 
 function prepareBit() {
   let key = $('#bitKey').val()
