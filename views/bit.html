@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="/css/master.css">
     <script>
       window.bitEncrypted = {{{encrypted}}}
+      window.bitSalt = '{{{salt}}}'
+      window.bitPermanent = {{{permanent}}}
       window.bitid = '{{{bitid}}}'
     </script>
     <script src="/js/jquery.js"></script>
@@ -18,30 +20,23 @@
   </head>
   <body>
     <main class="container">
-      <div class="bitContent">
+      <div class="content">
         <div id="viewBit">
+            <div id="bitError"></div>
             <h1 id="bitTitle">bitcode: {{bitid}}</h1>
-            <h2>Are you sure you want to view this bit?</h2>
+            <h2 id="bitWarning">Are you sure you want to view this bit?</h2>
             <input id="bitKey" type="text" placeholder="Enter your decryption key">
             <div class="buttons">
               <button id="back" type="button" onclick="location.href='/'">BACK</button>
-              <button id="create" type="button" onclick="viewBit()">VIEW</button>
+              <button id="create" type="button" onclick="prepareBit()">VIEW</button>
             </div>
         </div>
-        <!-- <div id="bitContent">
+        <div id="bitContent">
           <h1 id="bitTitle">bitcode: {{bitid}}</h1>
           <div id="bit"></div>
           <button id="back" type="button" onclick="location.href='/'">BACK</button>
-        </div> -->
+        </div>
       </div>
-      <footer>
-        <p id="right">
-            <a href="https://github.com/thecameronjones/bit/blob/master/README.md" target="_blank">Docs</a> - <a href="http://github.com/thecameronjones/bit/" target="_blank">Github</a>
-        </p>
-        <p id="left">
-          Built by <a href="https://github.com/cameronus/" target="_blank">Cameron Jones</a>
-        </p>
-      </footer>
     </main>
   </body>
 </html>

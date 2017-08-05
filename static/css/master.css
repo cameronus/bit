@@ -206,11 +206,12 @@ input:checked + #checkbox {
 
 #bitError {
   position: absolute;
-  top: 3vh;
+  top: 5vh;
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
 }
 
 #bitError p {
@@ -334,7 +335,6 @@ footer {
   width: 100%;
   position: absolute;
   bottom: 0;
-  left: 0;
 }
 
 a {
@@ -372,9 +372,16 @@ a:hover {
 }
 
 #bitContent {
-  width: 40vw;
+  margin-top: 20px;
+  width: 50vw;
   position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  display: none;
 }
 
 #bitTitle {

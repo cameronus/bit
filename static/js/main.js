@@ -26,10 +26,12 @@ function createBit() {
 
   if (rawtext.length == 0) return error('Your bit must be at least one character.')
   if (window.bitEncrypted && key.length == 0) return error('Your encryption key must be at least one character.')
-  if (window.bitEncrypted && key.length > 16) return error('Your encryption key must be less than or equal to 72 characters.')
+  if (window.bitEncrypted && key.length > 36) return error('Your encryption key is too long.')
 
   const md = window.markdownit()
   const processed = md.render(rawtext)
+
+  if (processed.length > 10000) return error('Your bit is too long.')
 
   if (window.bitEncrypted) {
     $('#bitLoader').show()
@@ -37,12 +39,13 @@ function createBit() {
 
     const bcrypt = dcodeIO.bcrypt
     bcrypt.hash(key, 10, (err, hashedKey) => {
+      if (err) return error('Hashing error, invalid encryption key.')
       triplesec.encrypt({
         data: new triplesec.Buffer(processed),
         key: new triplesec.Buffer(key),
         progress_hook: (obj) => {}
       }, (err, buff) => {
-        if (err) return error('Encryption error, please try again later.')
+        if (err) return error('Encryption error, invalid bit.')
         sendBit(buff.toString('hex'), hashedKey)
       })
     })
@@ -52,8 +55,6 @@ function createBit() {
 }
 
 function sendBit(text, hashedKey) {
-  if (text.length > 10000) return error('Your bit is too long.')
-
   $('#bitLoader').hide()
   $('#overlay').hide()
 

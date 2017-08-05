@@ -79,8 +79,10 @@ app.post('/', (req, res) => {
 
   if (hidden != hiddenSession) return res.status(400).end('Please reload the page to continue.')
   if (content.length/2 == 208) return res.status(400).end('Your bit must be at least one character.')
-  if (encrypted == 'true' && hashedKey == '') return res.status(400).end('You must have an encryption key.')
-  if (content.length > 10000) return res.status(400).end('Your bit is too long.')
+  if (encrypted && hashedKey == '') return res.status(400).end('You must have an encryption key.')
+  if (!encrypted && content.length > 10000) return res.status(400).end('Your bit is too long.')
+  if (encrypted && content.length > 40000) return res.status(400).end('Your bit is too long.')
+  if (hashedKey.length > 2000) return res.status(400).end('Your encryption key is too long.')
   if (!encrypted) {
     hashedKey = undefined
     triesLeft = undefined
@@ -88,7 +90,6 @@ app.post('/', (req, res) => {
 
   let bitid = shortid.generate()
   if (permanent) bitid += '~'
-
   const bit = new Bit({
     _id: bitid,
     text: content,
@@ -110,16 +111,9 @@ app.get('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', (req, res, next) => {
   Bit.find({ _id: cleanid }, (err, bits) => {
     if (err || bits.length != 1) return next()
     const bit = bits[0]
-    res.render('bit', { bitid: cleanid, encrypted: bit.encrypted })
+    const salt = bit.encrypted ? bcrypt.getSalt(bit.hashedKey) : ''
+    res.render('bit', { bitid: cleanid, encrypted: bit.encrypted, permanent: bit.permanent, salt: salt })
   })
-  /*Bit.find({ _id: cleanid }, (err, bits) => {
-
-    const bit = bits[0]
-    res.render('bit', { bitid: cleanid, bit: bit.text })
-    if (!bit.permanent) {
-      bit.remove()
-    }
-  })*/
 })
 
 /* HANDLE BIT DECRYPTION AND VIEWING */
@@ -134,20 +128,31 @@ app.post('/:bit([a-zA-Z0-9-_]{7,14}\~?\/?$)', (req, res, next) => {
     const permanent = bit.permanent
     const hashedKey = req.body.hashedKey
 
-    if (encrypted && hashedKey == '') return res.status(400).end('Please enter your decryption key.')
-    if (encrypted && permanent && hashedKey != bit.hashedKey) return res.status(400).end('You have entered the wrong decryption key.')
-    if (encrypted && !permanent && hashedKey != bit.hashedKey) {
+    if (!encrypted) {
+      res.status(200).end(bit.text)
+      if (!permanent) bit.remove()
+      return
+    }
+
+    console.log(hashedKey);
+    console.log(bit.hashedKey);
+
+    const match = hashedKey == bit.hashedKey
+    if (!match && permanent) return res.status(400).end('You have entered the wrong decryption key.')
+    if (!match) {
       bit.triesLeft -= 1
       bit.save((err) => {
         if (bit.triesLeft == 0) {
           res.status(400).end('This bit has disappeared after 3 incorrect attempts to decrypt it.')
           return bit.remove()
         }
-        return res.status(400).end(`You have entered the wrong decryption key. You have ${bit.triesLeft} tries left.`)
+        res.status(400).end(`You have entered the wrong decryption key. You have ${bit.triesLeft} more attempt(s).`)
       })
     }
-    res.status(200).end(bit.text)
-    if (!permanent) bit.remove()
+    if (match) {
+      res.status(200).end(bit.text)
+      if (!permanent) bit.remove()
+    }
   })
 })
 
