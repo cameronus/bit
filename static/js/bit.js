@@ -51,6 +51,7 @@ function viewBit(key, hashedKey) {
       $('#bitContent').show()
     }
   }).fail((data) => {
+    $('#bitKey').val('')
     if (data.status == 500) return error('Internal server error, try again later.')
     error(data.responseText)
   })
