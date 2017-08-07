@@ -398,6 +398,8 @@ a:hover {
 #bit pre {
   white-space: pre-wrap;
   word-wrap: break-word;
+  background: #dedede;
+  padding: 20px;
 }
 
 #bit img {
