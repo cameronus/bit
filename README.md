@@ -23,7 +23,7 @@ Bit is end-to-end encrypted with triplesec. The combination of Salsa 20, AES, an
 ![Crytographic Diagram](http://i.imgur.com/u8kV4qy.png)
 
 ## Website
-Bit is live at [https://bit.harker.io](https://bit.harker.io).
+Bit is currently not live.
 
 ## Author
 Cameron Jones (cameronus)
